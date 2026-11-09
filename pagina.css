@@ -1,0 +1,533 @@
+/* A página da Oxygênio Automação: o que é só dela. Os tokens do app e as fontes vêm de estilos.css (gerado), e as
+   maquetes usam os tokens do app para ficarem iguais à tela de verdade. As cores desta folha ficam todas no :root
+   abaixo; o movimento, nos tokens --mov-*: mude o ritmo em um lugar só. tests/test_site.py confere. */
+
+:root {
+  /* a página: tons quentes, texto grafite, a marca azul-esverdeada das logos e um tom só de botão */
+  --pagina-fundo: #fbfaf7;
+  --pagina-faixa: #f4f1ea;
+  --pagina-superficie: #ffffff;
+  --pagina-linha: #e7e3db;
+  --pagina-texto: #262d38;
+  --pagina-texto-suave: #5b6b7f;
+  --marca: #0c95a6;             /* formas, detalhes, números dos passos */
+  --marca-texto: #0b7383;       /* link e texto: 5,3:1 no fundo */
+  --marca-suave: #e4f3f4;
+  --destaque: #06b58a;          /* o único tom de botão: o verde do check das logos e do botão do app */
+  --destaque-hover: #25c79d;
+  --on-destaque: #172333;
+  --sombra-suave: 0 1px 2px rgba(38, 45, 56, .04), 0 10px 30px rgba(38, 45, 56, .06);
+  --sombra-botao: 0 6px 16px rgba(6, 181, 138, .28);
+  --raio: 12px;                 /* um raio só na página inteira */
+  --medida: 34rem;              /* uns 65 a 72 caracteres nesta fonte (o "0" dela é largo, o espaço é estreito) */
+  --largura-pagina: 1120px;
+
+  /* movimento: durações, curva e passo da cascata, num lugar só */
+  --mov-entrada: 560ms;
+  --mov-hover: 180ms;
+  --mov-suave: cubic-bezier(.22, 1, .36, 1);
+  --mov-passo: 70ms;
+  --mov-desloc: 14px;           /* quanto um bloco sobe ao aparecer */
+  --mov-maquete: 3200ms;        /* a maquete do destaque, do painel vazio à nota emitida */
+  --mov-pausa: 160ms;           /* respiro entre duas coisas que acontecem em seguida (a tela que entra espera a que sai) */
+  --mov-cena: 4800ms;           /* a cena da maquete do emissor: copiar, trocar o valor, conferir, emitir (abaixo de 5 s, sem botão de pausa) */
+  --mov-tela: 450ms;            /* uma tela dos passos se preenchendo por dentro (cada uma termina em menos de 1 s) */
+}
+
+/* a chave única (movimento.js, MOVIMENTO = false) e a preferência do sistema: tudo aparece parado e à vista, sem fade (decisão do dono, 08/11/2026) */
+html[data-movimento="desligado"] {
+  --mov-entrada: 1ms; --mov-hover: 0ms; --mov-passo: 0ms; --mov-desloc: 0px; --mov-maquete: 1ms; --mov-pausa: 0ms; --mov-cena: 1ms; --mov-tela: 1ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --mov-entrada: 1ms; --mov-hover: 0ms; --mov-passo: 0ms; --mov-desloc: 0px; --mov-maquete: 1ms; --mov-pausa: 0ms; --mov-cena: 1ms; --mov-tela: 1ms; }
+}
+/* no celular, mais leve: cascata mais curta e nada que dependa do mouse */
+@media (max-width: 47.99rem) {
+  :root { --mov-passo: 40ms; --mov-desloc: 10px; }
+}
+
+/* --------------------------------------------------------------- base */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 5.5rem; }
+@media (prefers-reduced-motion: no-preference) { html:not([data-movimento="desligado"]) { scroll-behavior: smooth; } }
+/* a Plus Jakarta Sans tem o espaço estreito (0,17 em): um pouco de espaço entre palavras devolve o respiro */
+body {
+  margin: 0; background: var(--pagina-fundo); color: var(--pagina-texto);
+  font: 400 1.0625rem/1.65 var(--font-sans); word-spacing: .03em; -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; height: auto; }
+a { color: var(--marca-texto); text-decoration-thickness: 1px; text-underline-offset: .15em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--marca); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { margin: 0; line-height: 1.15; text-wrap: balance; letter-spacing: -.005em; word-spacing: .06em; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.08; }
+h2 { font-size: clamp(1.75rem, 1.3rem + 1.5vw, 2.5rem); font-weight: 700; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+p { margin: 0; max-width: var(--medida); }
+p + p { margin-top: 1em; }
+ul { margin: 0; padding-left: 1.25rem; max-width: var(--medida); }
+li + li { margin-top: .4em; }
+.largura { width: 100%; max-width: var(--largura-pagina); margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
+.pular { position: absolute; left: -9999px; }
+.pular:focus { left: 1rem; top: 1rem; z-index: 50; padding: .5rem .75rem; background: var(--pagina-superficie); }
+.sobretitulo { margin-bottom: 1rem; color: var(--marca-texto); font-size: .9375rem; font-weight: 600; letter-spacing: .02em; }
+.apoio { color: var(--pagina-texto-suave); }
+.numero { font-family: var(--font-mono); font-size: .95em; }
+.junto { white-space: nowrap; }
+.tudo-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* o que falta decidir aparece à vista: a página não se publica sem resolver cada um (tests/test_site.py) */
+.a-confirmar { padding: 0 .4em; border-radius: 4px; background: var(--aviso-suave); color: var(--aviso); font-weight: 600; }
+.previa { margin: 0; padding: .5rem 1rem; background: var(--pagina-faixa); border-bottom: 1px solid var(--pagina-linha); font-size: .875rem; text-align: center; max-width: none; }
+
+/* --------------------------------------------------------------- botões e links de ação */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 46px;
+  padding: 6px 1.5rem; border: 1px solid var(--destaque); border-radius: var(--raio);
+  background: var(--destaque); color: var(--on-destaque); font-size: 1rem; font-weight: 600; text-decoration: none;
+  transition: transform var(--mov-hover) var(--mov-suave), box-shadow var(--mov-hover) var(--mov-suave),
+              background-color var(--mov-hover), border-color var(--mov-hover);
+}
+.botao:hover { border-color: var(--destaque-hover); background: var(--destaque-hover); color: var(--on-destaque); transform: translateY(-1px); box-shadow: var(--sombra-botao); }
+.botao:active { transform: translateY(0); box-shadow: none; transition-duration: 60ms; }
+.botao.discreto { border-color: var(--linha-forte); background: var(--pagina-superficie); color: var(--pagina-texto); }  /* a borda a 3:1, como no app */
+.botao.discreto:hover { background: var(--pagina-faixa); color: var(--pagina-texto); box-shadow: var(--sombra-suave); }
+.botao.whatsapp { border-color: var(--destaque); }
+.link-seta { display: inline-flex; align-items: center; gap: .35rem; padding-block: .5rem; margin-block: -.5rem; font-weight: 600; text-decoration: none; }  /* 44 px de toque */
+.link-seta::after { content: "→"; transition: transform var(--mov-hover) var(--mov-suave); }
+.link-seta:hover { text-decoration: underline; }
+.link-seta:hover::after { transform: translateX(3px); }
+
+/* --------------------------------------------------------------- marca e cabeçalho */
+.marca { display: inline-flex; align-items: center; gap: .6rem; color: var(--pagina-texto); text-decoration: none; }
+.marca img { display: block; width: 40px; height: 40px; }
+.marca__nome { display: flex; flex-direction: column; font-size: 1.125rem; font-weight: 700; line-height: 1.1; letter-spacing: -.01em; }
+.marca__sub { color: var(--pagina-texto-suave); font-size: .8125rem; font-weight: 500; letter-spacing: .01em; }
+.cabecalho { position: sticky; top: 0; z-index: 10; background: var(--pagina-fundo); border-bottom: 1px solid transparent; transition: border-color var(--mov-hover), box-shadow var(--mov-hover); }
+.cabecalho.rolou { border-color: var(--pagina-linha); box-shadow: var(--sombra-suave); }
+.cabecalho__linha { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; min-height: 4.5rem; padding-block: .5rem; }
+.cabecalho__menu { display: flex; gap: 1.5rem; font-size: .9375rem; font-weight: 500; }
+.cabecalho__menu a { padding-block: .7rem; color: var(--pagina-texto); text-decoration: none; }  /* 44 px de toque */
+.cabecalho__menu a:hover { color: var(--marca-texto); text-decoration: underline; }
+.cabecalho__acoes { display: flex; gap: .5rem; margin-left: auto; }
+.cabecalho__acoes .botao { padding-inline: .9rem; }
+@media (min-width: 30rem) { .cabecalho__acoes .botao { padding-inline: 1.5rem; } }
+/* abaixo de 1024 px, as três páginas ficam numa segunda linha do cabeçalho, sob a marca e os botões (U-01, lote 2);
+   o cabeçalho fixo fica uns 44 px mais alto, e as âncoras passam a parar abaixo dele */
+@media (max-width: 63.99rem) {
+  .cabecalho__menu { order: 3; flex-basis: 100%; gap: 1.25rem; margin-top: -.75rem; overflow-x: auto; white-space: nowrap; }
+  .cabecalho__menu a { padding-block: .625rem; }  /* 44 px, contando a linha de 25 px */
+  html { scroll-padding-top: 8.25rem; }
+}
+@media (min-width: 60rem) and (max-width: 63.99rem) { .passos__tela { top: 8.75rem; } }
+
+/* --------------------------------------------------------------- aparecer ao entrar na tela */
+.aparece { opacity: 0; transform: translateY(var(--mov-desloc)); transition: opacity var(--mov-entrada) var(--mov-suave), transform var(--mov-entrada) var(--mov-suave); transition-delay: calc(var(--i, 0) * var(--mov-passo)); }
+.aparece.visivel, html:not(.js) .aparece { opacity: 1; transform: none; }
+[data-cascata] > :nth-child(2) { --i: 1; }  [data-cascata] > :nth-child(3) { --i: 2; }
+[data-cascata] > :nth-child(4) { --i: 3; }  [data-cascata] > :nth-child(5) { --i: 4; }
+[data-cascata] > :nth-child(6) { --i: 5; }  [data-cascata] > :nth-child(7) { --i: 6; }
+
+/* --------------------------------------------------------------- destaque */
+.destaque { padding-block: 3rem 3.5rem; }
+.destaque__grade { display: grid; gap: 2.5rem; align-items: center; }
+/* o texto do destaque é o primeiro conteúdo da página (e o LCP): nunca começa invisível, só sobe um pouco (U-03) */
+.destaque h1 > span { display: block; animation: assentar var(--mov-entrada) var(--mov-suave) both; }
+.destaque h1 > span:nth-child(2) { animation-delay: 120ms; }
+.destaque__frase { margin: 1.5rem 0 2rem; font-size: 1.125rem; animation: assentar var(--mov-entrada) var(--mov-suave) 240ms both; }
+.destaque__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; animation: assentar var(--mov-entrada) var(--mov-suave) 320ms both; }
+@keyframes assentar { from { transform: translateY(var(--mov-desloc)); } }
+@keyframes subir { from { opacity: 0; transform: translateY(var(--mov-desloc)); } }
+
+/* a maquete do painel, com o mesmo CSS de tokens do app: nítida em qualquer largura, sem foto */
+.maquete { margin: 0; animation: subir var(--mov-entrada) var(--mov-suave) 200ms both; }
+.maquete figcaption { margin-top: .75rem; color: var(--pagina-texto-suave); font-size: .875rem; }
+.maquete__janela { display: flex; flex-direction: column; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--fundo); box-shadow: var(--sombra-suave); overflow: hidden; font-size: clamp(.78rem, .6rem + .6vw, .875rem); line-height: 1.35; }  /* nunca abaixo de 12,5 px (U-10) */
+.maquete__topo { display: flex; align-items: center; gap: .6em; padding: .6em 1em; background: var(--barra); color: var(--texto-barra); }
+.maquete__topo img { width: 2em; height: 2em; }
+.maquete__app { font-weight: 800; line-height: 1.1; }
+.maquete__app small { display: block; color: var(--texto-barra-suave); font-size: .7em; font-weight: 500; }
+.maquete__contexto { margin-left: auto; padding: .3em .7em; border: 1px solid var(--barra-hover); border-radius: 6px; background: var(--barra-hover); color: var(--texto-barra); font-size: .85em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; }
+.maquete__corpo { flex: 1; display: flex; flex-direction: column; gap: .9em; padding: 1em; }
+.maquete__cartoes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7em; }
+.maquete__cartao { padding: .7em .9em; border: 1px solid var(--linha); border-radius: 8px; background: var(--superficie); animation: subir var(--mov-entrada) var(--mov-suave) both; animation-delay: calc(var(--mov-maquete) * .12 + var(--i, 0) * var(--mov-passo) * 1.5); }
+.maquete__cartoes > :nth-child(2) { --i: 1; }  .maquete__cartoes > :nth-child(3) { --i: 2; }
+.maquete__cartao span { display: block; color: var(--texto-suave); font-size: .85em; }
+.maquete__cartao strong { font-size: 1.5em; font-weight: 700; }
+.maquete__nota { padding: .9em 1em; border: 1px solid var(--linha); border-radius: 8px; background: var(--superficie); animation: subir var(--mov-entrada) var(--mov-suave) both; animation-delay: calc(var(--mov-maquete) * .3); }
+.maquete__linha { display: flex; justify-content: space-between; gap: 1em; align-items: baseline; }
+.maquete__linha strong { font-weight: 600; }
+.maquete__valor { font-family: var(--font-mono); }
+.maquete__estado { position: relative; display: flex; align-items: center; justify-content: space-between; gap: .6em; margin-top: .6em; min-height: 2em; }
+.maquete__copiar { display: inline-flex; align-items: center; gap: .4em; padding: .35em .8em; border: 1px solid var(--linha-forte); border-radius: 6px; background: var(--superficie); color: var(--texto); font-weight: 600; white-space: nowrap; }
+.maquete__copiar svg { width: 1.1em; height: 1.1em; }
+.maquete__selos { position: relative; min-width: 8em; min-height: 2em; }
+.maquete .selo { position: absolute; right: 0; top: 0; display: inline-flex; align-items: center; gap: .4em; padding: .3em .8em; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+.maquete .selo svg { width: 1.1em; height: 1.1em; }
+.maquete__processando { background: var(--superficie-2); color: var(--texto-suave); opacity: 0; animation: processando var(--mov-maquete) linear both; }
+.maquete__emitida { background: var(--ok-suave); color: var(--ok); animation: emitida var(--mov-maquete) var(--mov-suave) both; }
+.maquete__emitida path { stroke-dasharray: 20; stroke-dashoffset: 0; animation: tracar var(--mov-maquete) var(--mov-suave) both; }
+@keyframes processando { 0%, 40% { opacity: 0; } 46%, 72% { opacity: 1; } 78%, 100% { opacity: 0; } }
+@keyframes emitida { 0%, 78% { opacity: 0; transform: translateY(4px); } 86%, 100% { opacity: 1; transform: none; } }
+@keyframes tracar { 0%, 84% { stroke-dashoffset: 20; } 100% { stroke-dashoffset: 0; } }
+
+/* a cena do emissor (M-01, lote 3): só nesta maquete. Tudo em função de --mov-cena (4,8 s), em cinco tempos: o painel
+   e os cartões (até 12%); a nota nº 34 com o botão Copiar nota (15%) e o toque no botão (23%); a nº 35 nasce copiada
+   (33%) e o valor troca (48%); ISS, Retenções e Líquido ganham o traço de conferido, um por vez (58 a 66%);
+   Processando (77%) e Emitida com o check (90 a 100%). Tudo ocupa espaço desde o início: nada pula. Com o movimento
+   reduzido ou a chave desligada, a cena dura 1 ms e abre no estado final. A maquete do Build não muda. */
+.maquete--emissor .maquete__cartao { animation-delay: calc(var(--mov-cena) * .06 + var(--i, 0) * var(--mov-passo) * 1.5); }
+.maquete--emissor .maquete__nota--anterior { animation-delay: calc(var(--mov-cena) * .15); }
+.maquete--emissor .maquete__nota--anterior .maquete__linha { flex-wrap: wrap; align-items: center; }  /* a 360 px, o botão desce inteiro para a linha de baixo */
+.maquete--emissor .maquete__copiar { animation: toque var(--mov-cena) var(--mov-suave) both; }
+.maquete--emissor .maquete__nota--nova { opacity: 0; animation: nascer var(--mov-cena) var(--mov-suave) both; }
+.maquete--emissor .maquete__valor--troca { display: inline-grid; text-align: right; }
+.maquete--emissor .maquete__valor-antigo, .maquete--emissor .maquete__valor-novo { grid-area: 1 / 1; }
+.maquete--emissor .maquete__valor-antigo { animation: sair-valor var(--mov-cena) linear both; }
+.maquete--emissor .maquete__valor-novo { opacity: 0; animation: entrar-valor var(--mov-cena) var(--mov-suave) both; }
+.maquete__conferencia { display: flex; flex-wrap: wrap; gap: .4em 1.1em; margin: .7em 0 0; padding: 0; list-style: none; max-width: none; }
+.maquete__conferencia li { display: inline-flex; align-items: center; gap: .35em; margin: 0; color: var(--texto-suave); font-weight: 600; }
+.maquete__conferencia svg { width: 1.1em; height: 1.1em; color: var(--ok); }
+.maquete__conferencia path { stroke-dasharray: 20; stroke-dashoffset: 20; animation: conferir var(--mov-cena) var(--mov-suave) both; }
+.maquete__conferencia li:nth-child(2) path { animation-delay: var(--mov-pausa); }
+.maquete__conferencia li:nth-child(3) path { animation-delay: calc(var(--mov-pausa) * 2); }
+.maquete__copiada { color: var(--texto-suave); font-size: .9em; }
+.maquete--emissor .maquete__processando { animation-name: processando-cena; animation-duration: var(--mov-cena); }
+.maquete--emissor .maquete__emitida { animation-name: emitida-cena; animation-duration: var(--mov-cena); }
+.maquete--emissor .maquete__emitida path { animation-name: tracar-cena; animation-duration: var(--mov-cena); }
+@keyframes toque { 0%, 22% { transform: none; } 24% { transform: scale(.92); } 27%, 100% { transform: none; } }
+@keyframes nascer { 0%, 31% { opacity: 0; transform: translateY(10px); } 38%, 100% { opacity: 1; transform: none; } }
+@keyframes sair-valor { 0%, 46% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes entrar-valor { 0%, 48% { opacity: 0; transform: translateY(5px); } 53%, 100% { opacity: 1; transform: none; } }
+@keyframes conferir { 0%, 58% { stroke-dashoffset: 20; } 64%, 100% { stroke-dashoffset: 0; } }
+@keyframes processando-cena { 0%, 76% { opacity: 0; } 79%, 88% { opacity: 1; } 91%, 100% { opacity: 0; } }
+@keyframes emitida-cena { 0%, 90% { opacity: 0; transform: translateY(4px); } 94%, 100% { opacity: 1; transform: none; } }
+@keyframes tracar-cena { 0%, 93% { stroke-dashoffset: 20; } 100% { stroke-dashoffset: 0; } }
+
+/* --------------------------------------------------------------- faixas */
+.faixa { padding-block: 4rem; }
+.faixa--suave { background: var(--pagina-faixa); }
+.faixa__cabeca { margin-bottom: 2.5rem; }
+.faixa__cabeca p { margin-top: 1rem; font-size: 1.125rem; }
+
+/* benefícios: um grande, três menores, tamanhos diferentes de propósito */
+.beneficios { display: grid; gap: 1.25rem; }
+.beneficio { padding: 1.75rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.beneficio h3 { margin-bottom: .6rem; }
+.beneficio--grande { display: grid; gap: 1.5rem; }
+.beneficio--grande h3 { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem); }
+.fluxo { display: grid; justify-items: start; gap: .4rem; align-self: center; font-size: .9375rem; }
+.fluxo__nota { padding: .6rem .9rem; border: 1px solid var(--linha); border-radius: 8px; background: var(--fundo); line-height: 1.3; }
+.fluxo__nota span { display: block; color: var(--texto-suave); font-size: .8125rem; }
+.fluxo__seta { display: inline-block; margin-left: 1rem; color: var(--marca); font-size: 1.25rem; line-height: 1; transform-origin: top center; }
+.fluxo__acao { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .9rem; border-radius: 8px; background: var(--marca-suave); color: var(--marca-texto); font-weight: 600; }
+.fluxo__acao svg { width: 1.1em; height: 1.1em; }
+/* M-04 (lote 5): o fluxo se desenha quando o bloco entra na tela: a primeira nota, a seta que cresce, o toque no Copiar nota
+   (ou no Comparar, no Build), a segunda seta e a nota nova descendo. Sem JavaScript, tudo já está desenhado. */
+.fluxo > * { transition: opacity var(--mov-entrada) var(--mov-suave), transform var(--mov-entrada) var(--mov-suave); transition-delay: calc(var(--mov-passo) * (6 + var(--i, 0) * 3)); }
+.fluxo > :nth-child(2) { --i: 1; }  .fluxo > :nth-child(3) { --i: 2; }  .fluxo > :nth-child(4) { --i: 3; }  .fluxo > :nth-child(5) { --i: 4; }
+html.js .aparece:not(.visivel) .fluxo__nota { opacity: 0; }
+html.js .aparece:not(.visivel) .fluxo__nota:last-child { transform: translateY(-1.5rem); }
+html.js .aparece:not(.visivel) .fluxo__seta { transform: scaleY(0); }
+html.js .aparece:not(.visivel) .fluxo__acao { opacity: 0; transform: scale(.96); }
+
+/* como funciona: a linha que se desenha, os passos que acendem e a tela que troca */
+.passos { position: relative; display: grid; gap: 1.5rem; }
+.passos__lista { position: relative; display: grid; gap: 2rem; margin: 0; padding-left: 3.5rem; list-style: none; max-width: none; }
+.passos__lista::before { content: ""; position: absolute; left: 1.4375rem; top: 1.5rem; bottom: 1.5rem; width: 2px; border-radius: 1px; background: var(--marca); transform: scaleY(0); transform-origin: top; }
+@supports (animation-timeline: view()) {
+  html:not([data-movimento="desligado"]) .passos__lista::before { animation: desenhar linear both; animation-timeline: view(); animation-range: entry 40% exit 60%; }
+  html[data-movimento="desligado"] .passos__lista::before { transform: scaleY(1); }
+}
+@supports not (animation-timeline: view()) {
+  .passos__lista::before { transition: transform 1.4s var(--mov-suave) .2s; }
+  .passos__lista.visivel::before { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) { .passos__lista::before { animation: none; transform: scaleY(1); } }
+@keyframes desenhar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.passo { position: relative; }
+.passo__numero { position: absolute; left: -3.25rem; top: -.1rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border: 2px solid var(--pagina-linha); border-radius: 50%; background: var(--pagina-fundo); color: var(--pagina-texto-suave); font-weight: 700; transition: background-color var(--mov-entrada), border-color var(--mov-entrada), color var(--mov-entrada); }
+.passo.ativo .passo__numero { border-color: var(--marca-texto); background: var(--marca-texto); color: var(--pagina-superficie); }  /* 5,5:1 */
+.passo h3 { margin-bottom: .5rem; }
+.mini { margin: 0; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--superficie); box-shadow: var(--sombra-suave); overflow: hidden; font-size: clamp(.78rem, .6rem + .6vw, .875rem); line-height: 1.35; }
+.mini__topo { display: flex; align-items: center; gap: .6em; padding: .5em 1em; background: var(--barra); color: var(--texto-barra); font-weight: 600; }
+.mini__topo img { width: 1.6em; height: 1.6em; }
+.mini__corpo { padding: 1em; display: grid; gap: .6em; }
+.mini__campo { display: grid; gap: .2em; }
+.mini__campo span { color: var(--texto-suave); font-size: .85em; font-weight: 600; }
+.mini__campo b { padding: .4em .6em; border: 1px solid var(--linha-forte); border-radius: 6px; background: var(--superficie); font-weight: 400; }
+.mini__campo b.preenchido { background: var(--superficie-2); }
+.mini__linha { display: flex; justify-content: space-between; gap: .6em; align-items: center; padding: .45em .6em; border: 1px solid var(--linha); border-radius: 6px; }
+.mini__linha.foco { border-color: var(--azul); background: var(--superficie-2); }
+.mini__chip { padding: .15em .6em; border-radius: 999px; background: var(--ok-suave); color: var(--ok); font-weight: 600; font-size: .9em; }
+.mini__chip--arquivo { background: var(--info-suave); color: var(--info); }
+.mini__botao { padding: .3em .8em; border-radius: 6px; background: var(--verde); color: var(--on-verde); font-weight: 600; white-space: nowrap; }
+.mini__botao--discreto { border: 1px solid var(--linha-forte); background: var(--superficie); color: var(--texto); }
+@media (min-width: 60rem) {
+  .passos { grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .passos__lista { grid-column: 1; gap: 4rem; padding-block: 1rem; }
+  .passos__tela { position: sticky; top: 6rem; grid-column: 2; grid-row: 1; display: grid; }
+  .passos__tela .mini { grid-area: 1 / 1; align-self: start; opacity: 0; transform: translateY(8px); transition: opacity calc(var(--mov-entrada) / 4) var(--mov-suave), transform var(--mov-entrada) var(--mov-suave); }  /* a que sai some rápido */
+  .passos__tela .mini.ativa, html:not(.js) .passos__tela .mini:first-child { opacity: 1; transform: none; transition-duration: var(--mov-entrada); transition-delay: var(--mov-pausa); }  /* a que entra espera a que sai (U-07) */
+  .passo .mini { display: none; }
+  /* M-03 (lote 4): a tela que entra se preenche por dentro, uma vez a cada vez que o passo fica ativo (a classe .ativa volta
+     e a animação recomeça). Passo 1: os campos se preenchem em cascata; passo 2: a nº 34 ganha foco, o Copiar nota faz o
+     toque e a nº 35 nasce; passo 3: Emitida e os arquivos chegam um depois do outro. Tudo ocupa o espaço desde o início. */
+  .passos__tela .mini.ativa .mini__campo b { animation: preencher var(--mov-tela) var(--mov-suave) both; animation-delay: calc(var(--mov-pausa) + var(--i, 0) * var(--mov-passo) * 1.5); }
+  .passos__tela .mini.ativa .mini__linha.foco { animation: focar var(--mov-tela) var(--mov-suave) both; animation-delay: var(--mov-pausa); }
+  .passos__tela .mini.ativa .mini__linha.foco .mini__botao { animation: toque-tela var(--mov-tela) var(--mov-suave) both; animation-delay: calc(var(--mov-pausa) + var(--mov-passo) * 2); }
+  .passos__tela .mini.ativa .mini__linha--nova { animation: nascer-linha var(--mov-tela) var(--mov-suave) both; animation-delay: calc(var(--mov-pausa) + var(--mov-passo) * 4); }
+  .passos__tela .mini:nth-child(3).ativa .mini__chip { animation: chegar var(--mov-tela) var(--mov-suave) both; animation-delay: calc(var(--mov-pausa) + var(--i, 0) * var(--mov-passo) * 2); }
+  .mini__corpo > :nth-child(2) { --i: 1; }  .mini__corpo > :nth-child(3) { --i: 2; }  .mini__corpo > :nth-child(4) { --i: 3; }
+  .mini__linha span > .mini__chip + .mini__chip { --i: 2; }
+}
+@keyframes preencher { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes focar { from { opacity: .4; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+@keyframes toque-tela { 0%, 100% { transform: none; } 50% { transform: scale(.92); } }
+@keyframes nascer-linha { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes chegar { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: none; } }
+@media (max-width: 59.99rem) {
+  .passos__tela { display: none; }  /* no celular, cada passo leva a sua tela logo abaixo */
+  .passo .mini { margin-top: 1rem; }
+}
+
+/* recursos: ícones de traço que se redesenham ao passar o mouse */
+/* M-05 (lote 5): a conferência lado a lado, o que o app vai enviar e o que o portal mostra; os checks se desenham um a um
+   quando o bloco entra na tela, e o aviso vem por último. Sem JavaScript, tudo conferido e à vista. */
+.conferencia { display: grid; gap: 1.5rem; margin-bottom: 2.5rem; padding: 1.75rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.conferencia h3 { margin-bottom: .6rem; }
+.conferencia__figura { margin: 0; min-width: 0; }
+.conferencia__figura figcaption { margin-top: .75rem; color: var(--pagina-texto-suave); font-size: .875rem; }
+.conferencia__cabeca, .conferencia__linha { display: grid; grid-template-columns: 1fr 1fr 1.4em; gap: .6em; align-items: center; padding: .5em 1em; }
+.conferencia__cabeca { color: var(--texto-suave); font-size: .85em; font-weight: 600; border-bottom: 1px solid var(--linha); }
+.conferencia__linha { border-bottom: 1px solid var(--linha); }
+.conferencia__linha small { display: block; color: var(--texto-suave); font-size: .85em; }
+.conferencia__ok { display: grid; place-items: center; width: 1.4em; height: 1.4em; border-radius: 50%; background: var(--ok-suave); color: var(--ok); }
+.conferencia__ok svg { width: 1em; height: 1em; }
+.conferencia__ok path { stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset calc(var(--mov-entrada) * .6) var(--mov-suave) calc(var(--mov-passo) * (5 + var(--i, 0) * 3)); }
+.conferencia__linha:nth-of-type(2) { --i: 1; }  .conferencia__linha:nth-of-type(3) { --i: 2; }  .conferencia__linha:nth-of-type(4) { --i: 3; }
+.visivel .conferencia__ok path, html:not(.js) .conferencia__ok path { stroke-dashoffset: 0; }
+.conferencia__aviso { display: flex; gap: .6em; align-items: flex-start; margin: .6em 1em 1em; padding: .6em .8em; border-left: 3px solid var(--aviso); border-radius: 6px; background: var(--aviso-suave); color: var(--aviso); font-weight: 600; max-width: none; opacity: 0; transform: translateY(4px); transition: opacity var(--mov-entrada) var(--mov-suave) calc(var(--mov-passo) * 18), transform var(--mov-entrada) var(--mov-suave) calc(var(--mov-passo) * 18); }
+.conferencia__aviso svg { flex: none; width: 1.3em; height: 1.3em; margin-top: .05em; }
+.visivel .conferencia__aviso, html:not(.js) .conferencia__aviso { opacity: 1; transform: none; }
+@media (min-width: 48rem) { .conferencia { grid-template-columns: 1fr 1.3fr; gap: 2.5rem; align-items: center; padding: 2rem; } }
+.recursos { display: grid; gap: 1.25rem; }
+.recurso { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; padding: 1.25rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); transition: transform var(--mov-hover) var(--mov-suave), box-shadow var(--mov-hover) var(--mov-suave); }
+.recurso__icone { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 10px; background: var(--marca-suave); color: var(--marca-texto); }
+.recurso__icone svg { width: 1.5rem; height: 1.5rem; }
+.recurso h3 { margin-bottom: .3rem; font-size: 1.0625rem; }
+.recurso p { font-size: .9375rem; color: var(--pagina-texto-suave); }
+/* M-06 (lote 8): o ícone se desenha uma vez quando o cartão entra na tela, um depois do outro; e de novo ao passar o mouse */
+.recurso__icone svg * { stroke-dasharray: 200; }  /* maior que qualquer traço dos ícones */
+html.js .recurso.visivel .recurso__icone svg * { animation: redesenhar calc(var(--mov-entrada) * 1.25) var(--mov-suave) both; animation-delay: calc(var(--mov-entrada) * .4 + var(--i, 0) * var(--mov-passo) * 2); }
+@media (hover: hover) {
+  .recurso:hover { transform: translateY(-2px); box-shadow: var(--sombra-suave); }
+  .recurso:hover .recurso__icone svg * { animation: redesenhar calc(var(--mov-entrada) * 1.25) var(--mov-suave) both; animation-delay: 0s; }
+}
+html[data-movimento="desligado"] .recurso .recurso__icone svg * { animation: none; }
+@keyframes redesenhar { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+
+/* o produto das DMS */
+.produto { display: grid; gap: 1.5rem; padding: 2rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.produto__marca { width: 4.5rem; height: 4.5rem; }
+.produto h3 { margin-bottom: .5rem; }
+.produto__frase { font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem; }
+.produto__nota { margin: -.75rem 0 1.25rem; }
+.produto ul { margin-bottom: 1.25rem; }
+.produto__ficha { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin: 0 0 1.5rem; }
+.produto__ficha dt { color: var(--pagina-texto-suave); font-size: .875rem; font-weight: 600; }
+.produto__ficha dd { margin: 0; }
+.produto__acoes { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* segurança: o cadeado que fecha quando a seção entra na tela */
+.seguranca { display: grid; gap: 2rem; }
+.cadeado { width: 7rem; height: 7rem; color: var(--marca); }
+/* M-14 (lote 7): no Build, "Onde ele para e chama você" tem o sinal de parada, que se desenha uma vez ao entrar; sem tremor */
+.parada { width: 7rem; height: 7rem; color: var(--aviso); }
+.parada path { stroke-dasharray: 80; stroke-dashoffset: 80; transition: stroke-dashoffset var(--mov-entrada) var(--mov-suave) calc(var(--mov-passo) * 4); }
+.parada path:nth-child(2) { transition-delay: calc(var(--mov-passo) * 10); }  .parada path:nth-child(3) { transition-delay: calc(var(--mov-passo) * 12); }
+.visivel .parada path, html:not(.js) .parada path { stroke-dashoffset: 0; }
+.cadeado__arco { transform: translateY(-5px); transition: transform var(--mov-entrada) var(--mov-suave) calc(var(--mov-passo) * 4); }
+.visivel .cadeado__arco { transform: translateY(0); }
+.cadeado__check { stroke-dasharray: 12; stroke-dashoffset: 12; transition: stroke-dashoffset calc(var(--mov-entrada) * .7) var(--mov-suave) calc(var(--mov-passo) * 11); }
+.visivel .cadeado__check { stroke-dashoffset: 0; }
+html:not(.js) .cadeado__arco { transform: none; }  html:not(.js) .cadeado__check { stroke-dashoffset: 0; }
+.fatos { display: grid; gap: 1.25rem; margin: 0; padding: 0; list-style: none; max-width: none; }
+.fatos li { margin: 0; padding-left: 1.25rem; border-left: 3px solid var(--marca); transition: opacity var(--mov-entrada) var(--mov-suave), transform var(--mov-entrada) var(--mov-suave), border-color var(--mov-entrada); transition-delay: calc(var(--mov-passo) * (10 + var(--i, 0) * 3)); }
+/* M-07 (lote 8): depois que o cadeado fecha, cada fato chega e a borda acende, um por vez; sem JavaScript, tudo à vista */
+.fatos li:nth-child(2) { --i: 1; }  .fatos li:nth-child(3) { --i: 2; }  .fatos li:nth-child(4) { --i: 3; }
+html.js .aparece:not(.visivel) .fatos li { opacity: 0; transform: translateY(var(--mov-desloc)); border-color: var(--marca-suave); }
+.fatos strong { display: block; margin-bottom: .2rem; }
+.independencia { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--pagina-linha); color: var(--pagina-texto-suave); font-size: .9375rem; }
+
+/* planos: sem preço na página; o escolhido tem o destaque sutil */
+.planos { display: grid; gap: 1.25rem; }
+.plano { position: relative; display: flex; flex-direction: column; padding: 1.75rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.plano--escolhido { border-color: var(--marca); box-shadow: 0 0 0 1px var(--marca), var(--sombra-suave); }
+.plano__etiqueta { position: absolute; top: -.8rem; left: 1.5rem; padding: .2rem .7rem; border-radius: 999px; background: var(--marca-texto); color: var(--pagina-superficie); font-size: .8125rem; font-weight: 600; }  /* 5,5:1 */
+.plano h3 { margin-bottom: .25rem; }
+.plano__para { margin-bottom: 1.25rem; color: var(--pagina-texto-suave); }
+.plano ul { margin-bottom: 1.5rem; list-style: none; padding: 0; }
+.plano li { padding-left: 1.5rem; background: no-repeat left .35em / 1rem url("imagens/check.svg"); }
+.plano__acao { margin-top: auto; }
+.planos__nota { margin-top: 1.5rem; color: var(--pagina-texto-suave); font-size: .9375rem; }
+
+/* perguntas: altura animada, contida no item, e o ícone que gira */
+.perguntas { display: grid; gap: .5rem; max-width: 46rem; }
+.pergunta { border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.pergunta h3 { margin: 0; font-size: 1.0625rem; }
+.pergunta__botao { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border: 0; border-radius: var(--raio); background: none; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+.pergunta__botao svg { flex: none; width: 1.25rem; height: 1.25rem; color: var(--marca-texto); transition: transform var(--mov-entrada) var(--mov-suave); }
+.pergunta.aberta .pergunta__botao svg { transform: rotate(180deg); }
+.pergunta__corpo { display: grid; }
+html.js .pergunta__corpo { grid-template-rows: 0fr; transition: grid-template-rows var(--mov-entrada) var(--mov-suave); }
+html.js .pergunta.aberta .pergunta__corpo { grid-template-rows: 1fr; }
+.pergunta__texto { min-height: 0; overflow: hidden; }
+html.js .pergunta__texto { visibility: hidden; transition: visibility 0s var(--mov-entrada); }
+html.js .pergunta.aberta .pergunta__texto { visibility: visible; transition-delay: 0s; }
+.pergunta__texto p { padding: 0 1.25rem 1.25rem; }
+
+/* chamada final e rodapé */
+.chamada { padding-block: 4rem; border-top: 1px solid var(--pagina-linha); background: var(--pagina-fundo); }
+.chamada .apoio { margin-top: 1rem; }
+.chamada__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+.chamada .numero { font-size: 1.0625rem; }
+.rodape { padding-block: 3rem; border-top: 1px solid var(--pagina-linha); color: var(--pagina-texto-suave); font-size: .875rem; }
+.rodape__grade { display: grid; gap: 2rem; }
+.rodape__links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin: 0 0 .75rem; padding: 0; list-style: none; max-width: none; }
+.rodape__links li { margin: 0; }
+.rodape a { color: var(--pagina-texto); }
+.rodape__links a, .rodape__links span { display: inline-block; padding-block: .75rem; }  /* 44 px de toque */
+.rodape p { max-width: none; }
+.rodape .marca { margin-bottom: 1rem; }
+
+/* transição entre páginas (quando houver mais de uma): um fade curto */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
+.cabecalho { view-transition-name: cabecalho; }  /* M-15 (lote 8): Entrar e Contratar não piscam na troca de página */
+::view-transition-group(cabecalho) { animation: none; }
+
+/* --------------------------------------------------------------- larguras */
+.destaque__grade > * { min-width: 0; }
+@media (max-width: 22.49rem) {  /* 320 px: cabe sem rolar de lado */
+  .cabecalho__linha { gap: .75rem; }
+  .cabecalho__acoes .botao { padding-inline: .6rem; font-size: .9375rem; }
+  .marca__nome { font-size: 1rem; }
+}
+@media (min-width: 48rem) {
+  .destaque { padding-block: 4rem 5rem; }
+  .faixa, .chamada { padding-block: 5.5rem; }
+  .beneficios { grid-template-columns: repeat(3, 1fr); }
+  .beneficio--grande { grid-column: 1 / -1; grid-template-columns: 1.2fr 1fr; align-items: center; }
+  .recursos { grid-template-columns: repeat(2, 1fr); }
+  .produto { grid-template-columns: auto 1fr; align-items: start; }
+  .seguranca { grid-template-columns: auto 1fr; gap: 3rem; align-items: start; }
+  .planos { grid-template-columns: repeat(2, 1fr); max-width: 52rem; }
+  .fatos { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2.5rem; }
+  .rodape__grade { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 60rem) {
+  .destaque { padding-block: 5rem 6rem; }
+  .destaque__grade { grid-template-columns: 1.15fr .85fr; gap: 4rem; }
+  .faixa, .chamada { padding-block: 6.5rem; }
+  .recursos { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --------------------------------------------------------------- o site com mais de uma página */
+.cabecalho__menu a[aria-current="page"] { color: var(--marca-texto); text-decoration: underline; text-decoration-thickness: 2px; }
+/* M-11 (lote 6): o destaque da página inicial com as duas pistas, cada passo acendendo em sequência depois do texto;
+   no celular a figura vem depois do Contratar. Com o movimento reduzido, tudo aceso desde o primeiro quadro. */
+.pistas { margin: 0; animation: subir var(--mov-entrada) var(--mov-suave) 200ms both; }
+.pistas figcaption { margin-top: .75rem; color: var(--pagina-texto-suave); font-size: .875rem; }
+.pistas__janela { display: grid; gap: 1rem; padding: 1.25rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); box-shadow: var(--sombra-suave); font-size: clamp(.78rem, .6rem + .6vw, .9375rem); line-height: 1.35; }
+.pista { padding: 1em; border: 1px solid var(--linha); border-radius: 8px; background: var(--fundo); }
+.pista__titulo { display: flex; align-items: center; gap: .5em; margin: 0 0 .7em; font-weight: 700; }
+.pista__titulo img { width: 1.6em; height: 1.6em; }
+.pista__passos { display: grid; gap: .5em; margin: 0; padding: 0; list-style: none; max-width: none; }
+.pista__passos li { display: flex; align-items: flex-start; gap: .6em; margin: 0; animation: acender var(--mov-entrada) var(--mov-suave) both; animation-delay: calc(var(--mov-entrada) * .7 + var(--i, 0) * var(--mov-passo) * 4); }
+.pista__passos li:nth-child(2) { --i: 1; }  .pista__passos li:nth-child(3) { --i: 2; }
+.pista:nth-child(2) .pista__passos li { animation-delay: calc(var(--mov-entrada) * .7 + (var(--i, 0) + 3) * var(--mov-passo) * 4); }  /* a segunda pista acende depois da primeira */
+.pista__numero { flex: none; display: grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--marca-texto); color: var(--pagina-superficie); font-size: .85em; font-weight: 700; }  /* 5,5:1 */
+.pista__selo { display: inline-flex; align-items: center; gap: .4em; justify-self: center; margin: 0; padding: .4em 1em; border-radius: 999px; background: var(--ok-suave); color: var(--ok); font-weight: 700; max-width: none; animation: acender var(--mov-entrada) var(--mov-suave) both; animation-delay: calc(var(--mov-entrada) * .7 + 7 * var(--mov-passo) * 4); }
+.pista__selo svg { width: 1.1em; height: 1.1em; }
+@keyframes acender { from { opacity: .25; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+@media (min-width: 48rem) { .pistas__janela { grid-template-columns: 1fr 1fr; } .pista__selo { grid-column: 1 / -1; } }
+
+/* a página da empresa: um cartão por produto */
+.produtos { display: grid; gap: 1.25rem; }
+.cartao-produto { display: flex; flex-direction: column; padding: 2rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); }
+.cartao-produto__marca { width: 4rem; height: 4rem; margin-bottom: 1.25rem; }
+.cartao-produto h3 { margin-bottom: .5rem; font-size: 1.375rem; }
+.cartao-produto__frase { margin-bottom: 1rem; font-size: 1.0625rem; font-weight: 500; }
+.cartao-produto ul { margin-bottom: 1.5rem; padding: 0; list-style: none; }
+.cartao-produto li { padding-left: 1.5rem; background: no-repeat left .35em / 1rem url("imagens/check.svg"); }
+.cartao-produto__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: auto; }
+/* M-12 (lote 6): o cartão inteiro é o caminho para a página do produto (um link só por cartão, esticado pelo ::before) */
+.cartao-produto { position: relative; }
+.cartao-produto.visivel { transition: transform var(--mov-hover) var(--mov-suave), box-shadow var(--mov-hover) var(--mov-suave); }
+.cartao-produto .link-seta::before { content: ""; position: absolute; inset: 0; border-radius: var(--raio); }
+.cartao-produto:focus-within { outline: 3px solid var(--marca); outline-offset: 3px; }
+.cartao-produto .link-seta:focus-visible { outline: none; }
+@media (hover: hover) {
+  .cartao-produto:hover { transform: translateY(-2px); box-shadow: var(--sombra-suave); }
+  .cartao-produto:hover .link-seta::after { transform: translateX(3px); }
+}
+@media (min-width: 48rem) { .produtos { grid-template-columns: repeat(2, 1fr); } }
+
+/* a página do Build: o progresso na maquete e a ficha solta no fim de uma seção */
+.maquete__progresso { display: flex; flex-wrap: wrap; gap: .4em; margin-top: .6em; }
+/* M-13 (lote 7): as etiquetas do progresso chegam em fila, com o check se desenhando, e o cartão "Para conferir" ganha um
+   anel único, que liga ao "Onde ele para e chama você". Com o movimento reduzido, tudo à vista e sem anel. */
+.maquete__progresso .mini__chip { display: inline-flex; align-items: center; gap: .35em; opacity: 0; animation: chegar var(--mov-entrada) var(--mov-suave) both; animation-delay: calc(var(--mov-maquete) * .4 + var(--i, 0) * var(--mov-passo) * 3); }
+.maquete__progresso .mini__chip svg { width: 1em; height: 1em; }
+.maquete__progresso .mini__chip path { stroke-dasharray: 20; stroke-dashoffset: 20; animation: desenhar-check calc(var(--mov-entrada) * .6) var(--mov-suave) both; animation-delay: calc(var(--mov-maquete) * .4 + var(--mov-entrada) * .5 + var(--i, 0) * var(--mov-passo) * 3); }
+.maquete__progresso > :nth-child(2) { --i: 1; }  .maquete__progresso > :nth-child(3) { --i: 2; }  .maquete__progresso > :nth-child(4) { --i: 3; }
+.maquete__cartao { position: relative; }
+.maquete__cartao--atencao strong { color: var(--aviso); }
+.maquete__cartao--atencao::after { content: ""; position: absolute; inset: -3px; border: 2px solid var(--aviso); border-radius: 10px; opacity: 0; animation: anel calc(var(--mov-entrada) * 1.2) var(--mov-suave) both; animation-delay: calc(var(--mov-maquete) * .85); }
+@keyframes desenhar-check { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
+@keyframes anel { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+.ficha-solta { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--pagina-linha); }
+
+/* as páginas legais: uma coluna de leitura, seções numeradas, data e versão no fim */
+.legal { max-width: 46rem; padding-block: 3rem 4rem; }
+.legal h1 { font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem); }
+.legal__resumo { margin-top: 1.25rem; font-size: 1.125rem; color: var(--pagina-texto-suave); }
+.aviso { margin-top: 1.5rem; padding: .9rem 1.25rem; border-left: 4px solid var(--aviso); border-radius: var(--raio); background: var(--aviso-suave); max-width: none; }
+.legal h2 { margin-top: 2.75rem; margin-bottom: .75rem; font-size: 1.5rem; }
+.legal h3 { margin-top: 1.5rem; margin-bottom: .4rem; font-size: 1.0625rem; }
+.legal p, .legal ul { max-width: none; }
+.legal ul, .legal p + ul, .legal ul + p { margin-top: .75em; }
+.legal h2 + ul, .legal h3 + ul { margin-top: 0; }
+.legal li + li { margin-top: .5em; }
+.legal__lista { display: grid; gap: 1rem; margin: 0; }
+.legal__lista dt { margin-bottom: .2rem; font-weight: 600; }
+.legal__lista dd { margin: 0; }
+.versao { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--pagina-linha); color: var(--pagina-texto-suave); font-size: .9375rem; }
+
+/* --------------------------------------------------------------- 360 px: a marca não encosta no Entrar (U-02) */
+@media (max-width: 26rem) {
+  .cabecalho__linha { gap: .75rem; }
+  .marca { gap: .4rem; }
+  .marca img { width: 32px; height: 32px; }
+}
+
+/* --------------------------------------------------------------- impressão: tudo à vista, nada preso, nada repetido (U-04) */
+@media print {
+  .aparece, .passos__tela .mini, .fluxo > *, .conferencia__aviso, .pista__passos li, .pista__selo, .pistas, .fatos li { opacity: 1; transform: none; transition: none; animation: none; }
+  .recurso__icone svg * { animation: none; stroke-dashoffset: 0; }
+  .conferencia__ok path, .parada path, .maquete__progresso .mini__chip path { stroke-dashoffset: 0; }
+  .maquete__progresso .mini__chip { opacity: 1; animation: none; }
+  .maquete__cartao--atencao::after { display: none; }
+  html.js .pergunta__corpo { grid-template-rows: 1fr; transition: none; }
+  html.js .pergunta__texto { visibility: visible; transition: none; }
+  .pergunta__botao svg { display: none; }
+  .cabecalho { position: static; box-shadow: none; }
+  .previa, .passos__tela, .pular { display: none; }
+  .passo .mini { display: block; margin-top: 1rem; }
+  .passos__lista::before { transform: scaleY(1); animation: none; }
+  .maquete__processando { display: none; }
+  .maquete__emitida, .maquete__emitida path, .maquete__cartao, .maquete__nota, .maquete, .maquete__valor-novo, .maquete__conferencia path { opacity: 1; animation: none; stroke-dashoffset: 0; }
+  .maquete__valor-antigo { display: none; }
+  .botao, .botao.discreto { box-shadow: none; }
+}

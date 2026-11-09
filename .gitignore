@@ -1,0 +1,16 @@
+# Ambiente de teste (pytest + Playwright, criado pelo uv)
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Lixo do sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Referências que o dono deixa para consulta (páginas de terceiros e documentos da empresa): nunca entram no repositório público
+Referencias/
+
+# Relatórios de webdesign, decisões e propostas de texto: ficam nesta pasta, fora do repositório público (decisão do dono, 08/11/2026)
+docs/

@@ -1,0 +1,85 @@
+/* Os tokens e as fontes do app Oxygênio Emissão Nacional, copiados do app sem mudar nada, para as maquetes do site ficarem
+   iguais à tela de verdade. Veio da folha de estilos do emissor (só leitura): mudou lá, copie de novo
+   o bloco :root inteiro. O que é só do site está em pagina.css. */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fontes/PlusJakartaSans-latin-v1.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("fontes/IBMPlexMono-Regular-latin-v1.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+/* enquanto a fonte da marca não chega: a do sistema, no tamanho dela, para o texto não pular de linha */
+@font-face {
+  font-family: "Reserva da marca";
+  src: local("Segoe UI"), local("Roboto"), local("Helvetica Neue"), local("Arial");
+  size-adjust: 107%;
+}
+
+:root {
+  color-scheme: light;  /* sem modo escuro (decisão de 03/11/2026) */
+
+  /* neutros */
+  --fundo: #f4f6f9;
+  --superficie: #ffffff;
+  --superficie-2: #eef2f6;    /* cabeçalho de tabela e linha em foco: o link em cima é o --azul-forte */
+  --linha: #e2e8f0;           /* divisória e borda de cartão: enfeite */
+  --linha-forte: #7d8ea3;     /* borda de campo e de botão secundário: 3:1 no mínimo */
+  --texto: #172333;
+  --texto-suave: #5b6b7f;
+
+  /* marca */
+  --navy: #172333;
+  --barra: #17293f;
+  --barra-hover: #22364e;
+  --fundo-da-logo-escura: #172333;  /* o fundo do PNG escuro da logo: nesta cor, ele se funde sem emenda */
+  --texto-barra: #ffffff;
+  --texto-barra-suave: #9fb4c9;
+  --nav-ativo: #0e7cb6;
+  --verde: #06b58a;           /* a ação principal; nunca como texto */
+  --verde-hover: #25c79d;
+  --on-verde: #172333;        /* o texto sobre o verde: azul-marinho, 6:1; nunca branco */
+  --azul: #0775b4;            /* link, seleção e foco */
+  --azul-forte: #055b8c;      /* fora do design system: link dentro das caixas e sobre --superficie-2 */
+  --foco: #0775b4;
+  --foco-barra: #4fb3ea;
+
+  /* situação: sempre cor, ícone e palavra */
+  --ok: #047857;      --ok-suave: #e6f6f0;
+  --aviso: #b45309;   --aviso-suave: #fdf3e3;
+  --erro: #b91c1c;    --erro-suave: #fcebeb;   --on-erro: #ffffff;
+  --info: #065f92;    --info-suave: #e7f1f9;
+
+  /* ambiente: fora da paleta da marca e da situação; nunca perto de uma cor acima (o teste mede) */
+  --ambiente-teste: #f2c14e;          --ambiente-teste-texto: #3b2a00;
+  --ambiente-producao: #6a1b9a;       --ambiente-producao-texto: #ffffff;
+
+  /* tipografia */
+  --font-sans: "Plus Jakarta Sans", "Reserva da marca", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Cascadia Mono", ui-monospace, monospace;
+  --texto-titulo-2: clamp(1.375rem, 1.2rem + .6vw, 1.5rem);    /* 22 a 24: título de página */
+  --texto-titulo-3: 1.125rem;                                  /* 18: título de cartão e de seção */
+  --texto-corpo: 1rem;                                         /* 16: o design system diz 15 (DU-3) */
+  --texto-rotulo: .875rem;   --texto-tabela: .9375rem;   --texto-apoio: .8125rem;
+
+  /* espaço, forma e sombra */
+  --esp-1: 4px;  --esp-2: 8px;  --esp-3: 12px;  --esp-4: 16px;  --esp-5: 24px;  --esp-6: 32px;
+  --raio-sm: 6px;  --raio-md: 8px;  --raio-lg: 12px;  --raio-xl: 16px;
+  --sombra-1: 0 1px 2px rgba(23, 35, 51, .06), 0 1px 3px rgba(23, 35, 51, .08);
+  --sombra-2: 0 12px 32px rgba(23, 35, 51, .14);
+  --sombra-fixa: 0 -4px 12px rgba(23, 35, 51, .10);   /* a barra presa embaixo */
+  --veu: rgba(23, 35, 51, .45);   /* atrás da gaveta aberta */
+
+  /* medidas */
+  --altura-controle: 44px;   /* campo e botão, com ou sem o dedo */
+  --altura-linha-tabela: 44px;
+  --altura-faixa: 2rem;
+  --largura-barra: 240px;
+  --largura-conteudo: 1200px;
+  --largura-login: 400px;
+  --ritmo: .15s;             /* movimento de resposta; zerado com o movimento reduzido no sistema */
+}

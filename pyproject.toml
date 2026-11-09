@@ -1,0 +1,14 @@
+[project]
+name = "oxygenio-site"
+version = "0.1.0"
+description = "Site estático da Oxygênio Automação: só o teste mora aqui, o site é HTML puro"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=9.1", "playwright>=1.64"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["navegador: abre um navegador (Playwright); só roda quando pedido com -m navegador"]
+addopts = "-m 'not navegador'"
