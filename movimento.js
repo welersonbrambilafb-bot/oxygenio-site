@@ -1,15 +1,17 @@
 /* O movimento da apresentação: blocos que aparecem ao entrar na tela (uma vez), os passos que acendem e trocam a
    tela ao lado, as perguntas que abrem com altura animada e o cabeçalho que ganha sombra ao rolar.
    Sem biblioteca: só IntersectionObserver e classes; o CSS (pagina.css, tokens --mov-*) faz o resto.
-   MOVIMENTO = false desliga tudo de uma vez, para comparar o desempenho; a preferência do sistema por menos
-   movimento desliga do mesmo jeito. Sem JavaScript, a página aparece inteira, parada. */
+   MOVIMENTO = false desliga tudo de uma vez, para comparar o desempenho. A preferência do sistema por menos
+   movimento (comum no Windows do escritório em "melhor desempenho") deixa a versão suave: os blocos esmaecem e os
+   traços se desenham, sem nada se deslocar (decisão do dono, 09/11/2026). Sem JavaScript, a página aparece inteira, parada. */
 (function () {
   "use strict";
   var MOVIMENTO = true;  // a chave única
 
   var html = document.documentElement;
   var reduzido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!MOVIMENTO || reduzido) { html.setAttribute("data-movimento", "desligado"); }
+  if (!MOVIMENTO) { html.setAttribute("data-movimento", "desligado"); }
+  else if (reduzido) { html.setAttribute("data-movimento", "suave"); }
   var semMovimento = html.getAttribute("data-movimento") === "desligado";
   var temObservador = "IntersectionObserver" in window;
 
@@ -28,6 +30,29 @@
       });
     }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
     aparecem.forEach(function (elemento) { if (!elemento.classList.contains("visivel")) { observador.observe(elemento); } });
+  }
+
+  // 1b. As cenas (o cadeado, a placa de parada, os ícones, os checks da conferência, os fatos) esperam o bloco passar da
+  //     linha de 65% da altura da tela, perto de onde o olho está; antes, o bloco já apareceu, mas a cena não começou.
+  //     No fim da página, o que está na tela entra em foco de uma vez (um bloco baixo nunca passa da linha).
+  if (temObservador && !semMovimento) {
+    var focar = function (entradas, obs) {
+      entradas.forEach(function (entrada) {
+        if (entrada.isIntersecting) { entrada.target.classList.add("em-foco"); obs.unobserve(entrada.target); }
+      });
+    };
+    var meioDaTela = new IntersectionObserver(focar, { rootMargin: "0px 0px -35% 0px" });
+    aparecem.forEach(function (elemento) { meioDaTela.observe(elemento); });
+    var noFim = function () {
+      if (window.innerHeight + window.scrollY < html.scrollHeight - 4) { return; }
+      aparecem.forEach(function (elemento) {
+        if (elemento.getBoundingClientRect().top < window.innerHeight) { elemento.classList.add("em-foco"); }
+      });
+    };
+    window.addEventListener("scroll", noFim, { passive: true });
+    noFim();
+  } else {
+    aparecem.forEach(function (elemento) { elemento.classList.add("em-foco"); });
   }
 
   // 2. Como funciona: o passo no meio da tela acende, e a tela ao lado (em telas largas) troca para a dele.

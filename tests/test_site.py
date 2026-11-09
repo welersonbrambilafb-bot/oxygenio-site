@@ -110,15 +110,24 @@ def test_as_cores_ficam_so_no_root() -> None:
 
 def test_o_movimento_tem_tokens_uma_chave_e_cabe_no_orcamento() -> None:
     """Durações e curva num lugar só; uma chave desliga tudo; o script fica bem abaixo dos 60 KB do orçamento."""
-    for token in ("--mov-entrada", "--mov-hover", "--mov-suave", "--mov-passo", "--mov-maquete", "--mov-pausa", "--mov-cena", "--mov-tela"):
+    for token in ("--mov-entrada", "--mov-hover", "--mov-suave", "--mov-passo", "--mov-maquete", "--mov-pausa", "--mov-cena", "--mov-tela",
+                  "--mov-esmaecer", "--mov-gesto", "--mov-espera", "--mov-gesto-curva"):
         assert f"{token}:" in FOLHA, token
     for cena in re.findall(r"--mov-(?:maquete|cena): (\d+)ms", FOLHA):  # cena que começa sozinha: até 5 s, senão pede botão de pausa
         assert int(cena) <= 5000, cena
     assert "var MOVIMENTO = true;" in SCRIPT and 'data-movimento="desligado"' in FOLHA
     assert "prefers-reduced-motion: reduce" in FOLHA and "prefers-reduced-motion" in SCRIPT
-    # com a chave desligada ou a preferência do sistema, tudo parado de verdade: sem fade, sem passo, sem pausa (U-16)
+    # com a chave desligada, tudo parado de verdade (U-16); com a preferência do sistema, as maquetes também param, mas
+    # fica a versão suave: o esmaecer e os traços (decisão do dono, 09/11/2026), sem o arco do cadeado se mexer
     parados = re.findall(r'(?:html\[data-movimento="desligado"\]|@media \(prefers-reduced-motion: reduce\)) \{[^}]*?--mov-entrada: 1ms;[^}]*?--mov-maquete: 1ms;[^}]*?--mov-pausa: 0ms; --mov-cena: 1ms; --mov-tela: 1ms;', FOLHA)
     assert len(parados) == 2, parados
+    desligado = re.search(r'html\[data-movimento="desligado"\] \{[^}]*\}', FOLHA).group()
+    assert all(f"{t}: " in desligado for t in ("--mov-esmaecer", "--mov-gesto", "--mov-espera")), desligado
+    suave = FOLHA[FOLHA.index("@media (prefers-reduced-motion: reduce)"):]
+    suave = suave[:suave.index("\n}")]
+    assert not any(t in suave for t in ("--mov-esmaecer", "--mov-gesto", "--mov-espera")), suave
+    assert ".cadeado__arco { transform: none; transition: none; }" in suave
+    assert 'html.setAttribute("data-movimento", "suave")' in SCRIPT and '"em-foco"' in SCRIPT
     assert "@media print" in FOLHA and "stroke-dasharray: 60" not in FOLHA  # impressão prevista (U-04); traço inteiro (U-05)
     assert "view-transition-name: cabecalho" in FOLHA and "::view-transition-group(cabecalho) { animation: none; }" in FOLHA  # M-15
     assert "hashchange" in SCRIPT and 'classList.contains("pergunta__corpo")' in SCRIPT  # a pergunta aberta pelo endereço (U-15)
@@ -367,7 +376,7 @@ def test_sem_rolagem_lateral_sem_cookie_e_com_os_botoes_a_vista(endereco: str, n
 
     with sync_playwright() as p:
         nav = p.chromium.launch(channel=_canal(), headless=True)
-        contexto = nav.new_context(viewport={"width": largura, "height": 800})
+        contexto = nav.new_context(viewport={"width": largura, "height": 800}, reduced_motion="no-preference")
         pagina = contexto.new_page()
         erros: list[str] = []
         pagina.on("console", lambda m: erros.append(m.text) if m.type == "error" else None)
@@ -456,8 +465,9 @@ def test_sem_rolagem_lateral_sem_cookie_e_com_os_botoes_a_vista(endereco: str, n
         for y in range(0, altura_total, 300):  # rola como uma pessoa, de pouco em pouco
             pagina.evaluate(f"window.scrollTo(0, {y})")
             pagina.wait_for_timeout(120)
-        pagina.wait_for_timeout(1500)
+        pagina.wait_for_timeout(3500)  # a cena mais longa (o cadeado e os quatro fatos) termina em uns 3 s
         assert pagina.locator(".aparece:not(.visivel)").count() == 0
+        assert pagina.locator(".aparece:not(.em-foco)").count() == 0
         if pagina.locator(".conferencia").count():  # depois de rolar, a conferência está desenhada e o fluxo inteiro à vista
             assert pagina.evaluate("[...document.querySelectorAll('.conferencia__ok path')].every(p => getComputedStyle(p).strokeDashoffset === '0px')")
             assert pagina.evaluate("[...document.querySelectorAll('.conferencia__aviso, .fluxo > *')].every(e => getComputedStyle(e).opacity === '1')")
@@ -544,4 +554,48 @@ def test_nada_do_emissor_no_repositorio() -> None:
             assert palavra not in texto, (caminho, palavra)
     for pasta in ("docs", "Referencias"):
         assert not any(c.startswith(pasta + "/") for c in versionados), pasta
+
+
+@pytest.mark.navegador
+def test_a_cena_espera_o_meio_da_tela_e_a_versao_suave_nao_desloca_nada(endereco: str) -> None:
+    """Lote 9 (09/11/2026): o cadeado não começa com a seção no pé da tela, só quando ela chega perto do meio; e, com o
+    sistema pedindo menos movimento, a página fica na versão suave: maquete no estado final, nada se desloca, mas o check
+    se desenha e os fatos chegam."""
+    from playwright.sync_api import sync_playwright
+
+    def levar(pagina: object, fracao: float) -> None:  # põe o topo da seção de segurança nesta fração da altura da tela
+        pagina.evaluate(f"window.scrollBy({{top: document.querySelector('.seguranca').getBoundingClientRect().top - innerHeight * {fracao}, behavior: 'instant'}})")
+
+    check = "getComputedStyle(document.querySelector('.cadeado__check')).strokeDashoffset"
+    arco = "new DOMMatrix(getComputedStyle(document.querySelector('.cadeado__arco')).transform).f"  # quanto o arco está acima
+    with sync_playwright() as p:
+        nav = p.chromium.launch(channel=_canal(), headless=True)
+        for reduzido in (False, True):
+            contexto = nav.new_context(viewport={"width": 1440, "height": 800}, reduced_motion="reduce" if reduzido else "no-preference")
+            pagina = contexto.new_page()
+            pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+            assert pagina.evaluate("document.documentElement.dataset.movimento") == ("suave" if reduzido else "ligado")
+            if reduzido:  # a maquete do destaque abre no estado final, como antes
+                for seletor in (".maquete__emitida", ".maquete__valor-novo"):
+                    assert pagina.evaluate(f"getComputedStyle(document.querySelector('{seletor}')).opacity") == "1", seletor
+            levar(pagina, .75)  # a seção apareceu no pé da tela (abaixo da linha de 65%): o bloco esmaece, a cena espera
+            pagina.wait_for_timeout(1200)
+            classes = pagina.locator(".seguranca").get_attribute("class")
+            assert "visivel" in classes and "em-foco" not in classes, classes
+            assert pagina.evaluate(check) == "12px"
+            levar(pagina, .4)  # perto do meio: a cena começa, o check vem depois do arco
+            pagina.wait_for_timeout(500)
+            assert "em-foco" in pagina.locator(".seguranca").get_attribute("class")
+            assert pagina.evaluate(check) == "12px"
+            if reduzido:  # na versão suave o arco nunca se mexe e nenhum bloco se desloca
+                assert pagina.evaluate(arco) == 0
+                assert pagina.evaluate("[...document.querySelectorAll('.aparece, .fatos li')].every(e => new DOMMatrix(getComputedStyle(e).transform).f === 0)")
+            else:
+                assert pagina.evaluate(arco) < 0  # ainda descendo
+            pagina.wait_for_timeout(3000)
+            assert pagina.evaluate(check) == "0px"
+            assert pagina.evaluate(arco) == 0  # fechado
+            assert pagina.evaluate("[...document.querySelectorAll('.fatos li')].every(e => getComputedStyle(e).opacity === '1')")
+            contexto.close()
+        nav.close()
 

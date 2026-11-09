@@ -13,7 +13,7 @@ está abaixo. A história das decisões está no repositório do emissor, em `do
 |---|---|---|
 | `*.html` | As páginas. **Todos os textos estão nelas**, entre as tags, em português. | Sim |
 | `pagina.css` | O desenho: cores (só no bloco `:root` do começo), fontes, espaços e o movimento (tokens `--mov-*`). | Sim, com cuidado |
-| `movimento.js` | O script do movimento. `var MOVIMENTO = true;` é a chave que desliga tudo. | Só se souber o que faz |
+| `movimento.js` | O script do movimento. `var MOVIMENTO = true;` é a chave que desliga tudo. Com o computador pedindo menos movimento (o Windows em "melhor desempenho"), a página fica na versão suave: os blocos esmaecem e os traços se desenham, sem nada se deslocar (decisão do dono, 09/11/2026). As cenas (cadeado, placa de parada, ícones, conferência, fatos) começam com o bloco perto do meio da tela; o ritmo delas está em `--mov-gesto` e `--mov-espera`. | Só se souber o que faz |
 | `estilos.css` | As fontes e o `:root` do app do emissor, copiados sem mudar nada (as maquetes ficam iguais à tela de verdade). | Só copiando de novo do app |
 | `fontes/` | Plus Jakarta Sans e IBM Plex Mono, com as licenças em `LICENCAS.txt`. | Não |
 | `imagens/` | As logos: `oxygenio_badge_192.png` e `oxygenio_icon_256.png` (o O², marca principal), `oxygenio_nfse_icon.svg` (o emissor, com "NFS-e" escrito), `check.svg`. | Não |
