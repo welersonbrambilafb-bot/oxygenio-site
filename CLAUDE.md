@@ -22,14 +22,14 @@ GitHub: **cada mudança é um commit**, com mensagem em português. Quem edita a
 - **Decisões do dono que valem em todas as páginas:** sem preço, sem captcha, sem prova social (depoimento, número de
   clientes), sem modo escuro, WhatsApp como contato, o O² como marca principal, faixa de prévia e `noindex` até zerar
   a lista do que falta decidir (`LEIA-ME.md`).
-- **"Entrar" sempre leva a `https://emissor.oxygenioautomacao.com.br/`.** "Contratar" leva ao WhatsApp da equipe,
+- **"Entrar" (em toda página, menos na do Oxygênio DMS) sempre leva a `https://emissor.oxygenioautomacao.com.br/`.** "Contratar" leva ao WhatsApp da equipe,
   `https://wa.me/5544991160421`, com a mensagem pronta. São os dois únicos endereços de fora, mais os links entre as
   páginas do próprio site.
 - **Textos legais** (`termos-de-uso.html`, `privacidade.html`, `lgpd.html`) **com data e versão no rodapé.** Mudou o
   texto, sobe a versão e a data. O que o dono ainda não confirmou fica marcado com `<span class="a-confirmar">`.
 - **No GitHub só o site.** O emissor de NFS-e, os motores, as senhas e os processos do escritório ficam no servidor da
   Oxygênio, nunca neste repositório (decisão do dono, 08/11/2026). Nenhum arquivo versionado aqui cita o código do
-  emissor ou do Build: nem nome de pasta, nem caminho de arquivo, nem nome de módulo (o teste confere). As pastas
+  emissor ou do Oxygênio DMS: nem nome de pasta, nem caminho de arquivo, nem nome de módulo (o teste confere). As pastas
   deles no computador do dono são só leitura: daqui não se altera nada lá; de lá só vem o que o texto público já diz.
 - **Fonte e ícone só locais** (`fontes/`, `imagens/`). Nada do Google Fonts, de CDN ou de qualquer endereço de fora.
 - **Mensagens, textos e commits em português.** Linguagem de escritório contábil, não de programador.

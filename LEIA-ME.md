@@ -37,7 +37,7 @@ Salve sempre em **UTF-8 sem BOM**, com editor de texto (VS Code, Notepad++, Bloc
   `ponta a ponta`, `melhor do mercado`, e o tom de anúncio: `revolucion`, `potencializ`, `transforme`, `descubra`,
   `solução completa`, `de ponta`, `no mundo atual`, `sem complicação`, `em apenas alguns cliques`, `mais do que`,
   `não é apenas`, `inteligente`, `algoritmo`, `robô`, `milhares`, `o melhor`, `o mais rápido`, e o ponto de exclamação.
-  Também não entram `IA`, `emita e envie` (o app não envia nota) e, no que fala do Build, cidade, ano ou número de
+  Também não entram `IA`, `emita e envie` (o app não envia nota) e, no que fala do Oxygênio DMS (o antigo Build), cidade, ano ou número de
   empresas (decisão de 03/11/2026: só os benefícios). As páginas legais podem dizer "LGPD": é o nome da lei.
 - **O aviso de independência** aparece em toda página, no rodapé, com o texto exato:
   `sem vínculo com a Receita Federal, com prefeituras nem com o Portal Nacional`. Na página do emissor, aparece também
@@ -49,10 +49,19 @@ Salve sempre em **UTF-8 sem BOM**, com editor de texto (VS Code, Notepad++, Bloc
   `?text=` (a mensagem muda conforme o produto da página). Dentro de cada Contratar vai o aviso
   `<span class="tudo-oculto"> (abre o WhatsApp)</span>`, que só o leitor de tela lê (decisão de 08/11/2026). `Chamar no
   WhatsApp` é o único `botao whatsapp`. Outras chamadas são links com `class="link-seta"`. No canto superior
-  direito, Entrar vem antes de Contratar.
-- **Cabeçalho e rodapé iguais em todas as páginas** (só a mensagem do Contratar muda). Mudou um, mude em todas.
-- **As seções da página do emissor**, nesta ordem e com estes `id`: `beneficios`, `como-funciona`, `recursos`, `dms`,
-  `seguranca`, `planos`, `perguntas`, `contato`.
+  direito, Entrar vem antes de Contratar. A página do Oxygênio DMS (`build.html`) não tem o Entrar, que leva ao login
+  do Emissor (decisão do dono, 12/11/2026); ela termina num bloco que leva à página do Emissor, como a do Emissor
+  termina num bloco que leva à do DMS. Os planos do Emissor levam direto ao WhatsApp, com a mensagem do plano.
+- **Cabeçalho e rodapé iguais em todas as páginas** (só a mensagem do Contratar muda, e o DMS não tem o Entrar). Mudou
+  um, mude em todas. No menu, o produto das DMS se chama "DMS"; nas frases, "Oxygênio DMS" ou "o aplicativo" (para
+  não confundir o produto com a declaração); o nome completo, "Oxygênio Sistema de Automação de Obrigações Fiscais
+  Municipal", aparece no alto da página dele.
+- **As seções da página do emissor**, nesta ordem e com estes `id`: `beneficios`, `como-funciona`, `recursos`,
+  `seguranca`, `planos`, `perguntas`, `dms`, `contato` (o DMS depois das perguntas, decisão do dono de 12/11/2026).
+- **Nenhuma frase promete o que o app não faz** (rodada de 11/11/2026). O teste recusa as frases antigas que a rodada
+  derrubou: o XML e o PDF "no histórico" (são baixados no computador), a conferência que "marca" cada campo, "em um
+  clique", "compara com o mês anterior" (o DMS compara a mesma competência rodada de novo), "a conta bloqueia" (a
+  entrada é freada), "a Oxygênio não consegue ler as senhas" (elas se abrem dentro do servidor).
 - **Um `<h1>` só** por página, títulos em ordem (`h2` depois de `h1`, `h3` depois de `h2`), toda `<img>` com `alt`,
   `width` e `height`.
 - **Páginas legais com data e versão** no fim do texto: `<p class="versao">Versão X, de D de mês de AAAA</p>`.
@@ -73,14 +82,17 @@ reescreva. Nos textos legais, linguagem de escritório, direta, sem juridiquês 
 
 ## As decisões do dono que valem no site inteiro
 
-Sem preço (o preço é combinado com a equipe), sem captcha (omitido por enquanto), sem prova social (depoimento, número
+Sem preço escrito (o preço é combinado com a equipe; a condição especial dos três primeiros meses dos planos
+Empresarial e Escritório é apresentada no WhatsApp), três planos no Emissor (Inicial: 1 empresa e até 5 notas por
+mês; Empresarial: 1 empresa e até 100 notas por mês; Escritório: várias empresas), sem captcha (o download diz "o
+portal pede uma verificação"), sem prova social (depoimento, número
 de clientes, logos de clientes), sem modo escuro, WhatsApp como único contato, o O² como marca principal, "servidor da
 Amazon" sem dizer onde, cookies sem banner (uma linha no rodapé: o site não usa nenhum), e a faixa de prévia até zerar
 a lista abaixo.
 
 ## O que não dizer sem o dono decidir
 
-Preço, limites do plano pago, cidade ou quantidade de empresas do Build, onde o servidor fica (só "servidor da Amazon"),
+Preço, cidade ou quantidade de empresas do Oxygênio DMS, onde o servidor fica (só "servidor da Amazon"),
 o captcha, e-mail, endereço, razão social por extenso nos textos legais (até ele confirmar), prazos de guarda de dados.
 
 ## O que falta decidir (a lista que segura a prévia)
@@ -90,9 +102,8 @@ Cada item está marcado na página com `class="a-confirmar"` e repetido em `A_CO
 - Em toda página, no rodapé: o e-mail do encarregado de dados. Decidido (12/11/2026): um endereço no domínio da empresa,
   ainda a criar; até lá o site mostra só "@oxygenioautomacao.com.br". O endereço da empresa está decidido (08/11/2026):
   só "Cianorte, Paraná", sem rua nem CEP, no rodapé e nas páginas legais.
-- `emissao-nacional.html`: tempos ("uma manhã" vira "alguns minutos"), a lista do que o Build faz, os limites do plano
-  Escritório, o prazo do código de teste (30 dias).
-- `build.html`: a lista do que ele faz e quais prefeituras atende (dizer ou não a cidade é decisão do dono).
+- `emissao-nacional.html` e `build.html`: nada pendente desde 12/11/2026 (planos, tempos, lista do DMS e prefeituras
+  decididos).
 - As páginas legais (versão 0.4, 12/11/2026, corrigidas pela rodada de 11/11 com o que os apps fazem: o servidor não
   guarda o XML nem o PDF, as senhas se abrem dentro do servidor, a cópia diária vai cifrada ao Backblaze B2): razão
   social e CNPJ (já conferidos no cartão, o dono confirma o uso), o encarregado, o apagamento quando a conta termina (o

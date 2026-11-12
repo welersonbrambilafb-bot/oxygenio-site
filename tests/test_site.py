@@ -34,9 +34,10 @@ RODAPE_A_CONFIRMAR = {"a confirmar", "e-mail a confirmar"}
 LEGAL_A_CONFIRMAR = {"revisão de advogado a confirmar", "razão social a confirmar"}
 A_CONFIRMAR: dict[str, set[str]] = {
     "index.html": RODAPE_A_CONFIRMAR,
-    "emissao-nacional.html": RODAPE_A_CONFIRMAR | {"limites a confirmar", "tempos a confirmar", "lista a conferir",
-                                                   "prazo a confirmar"},
-    "build.html": RODAPE_A_CONFIRMAR | {"lista a conferir", "prefeituras atendidas a confirmar"},
+    # decididos em 12/11/2026: os três planos, a condição dos três primeiros meses, sem promessa de tempo, a lista do
+    # DMS conferida pelo dono e as prefeituras "em ampliação"
+    "emissao-nacional.html": RODAPE_A_CONFIRMAR,
+    "build.html": RODAPE_A_CONFIRMAR,
     "termos-de-uso.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
         "CNPJ a confirmar", "limite de responsabilidade a confirmar", "apagamento a confirmar",
         "prazo de aviso a confirmar", "foro a confirmar"},
@@ -164,6 +165,9 @@ def test_entrar_vai_ao_emissor_e_contratar_ao_whatsapp(nome: str) -> None:
     principais = re.findall(r'<a class="botao" href="([^"]+)">(.*?)</a>', pagina)
     assert principais and all(texto == CONTRATAR and destino.startswith(WHATSAPP + "?text=") for destino, texto in principais)
     secundarios = re.findall(r'<a class="botao discreto" href="([^"]+)">([^<]+)</a>', pagina)
+    if nome == "build.html":  # a página do DMS não tem Entrar: ele leva ao login do Emissor (decisão do dono, 12/11/2026)
+        assert not secundarios and ">Entrar<" not in pagina
+        return
     assert secundarios and all(texto == "Entrar" and destino == ENTRAR for destino, texto in secundarios)
     whats = re.findall(r'<a class="botao whatsapp" href="([^"]+)">', pagina)
     assert len(whats) <= 1 and all(w.startswith(WHATSAPP + "?text=") for w in whats)
@@ -175,7 +179,9 @@ def test_entrar_vai_ao_emissor_e_contratar_ao_whatsapp(nome: str) -> None:
 def test_as_secoes_do_emissor_na_ordem_combinada() -> None:
     pagina = HTML["emissao-nacional.html"]
     ids = re.findall(r'<section id="([^"]+)"', pagina)
-    assert ids == ["beneficios", "como-funciona", "recursos", "dms", "seguranca", "planos", "perguntas", "contato"]
+    # o bloco do DMS depois das perguntas (decisão do dono, 12/11/2026): quem decide sobre o Emissor não encontra outro
+    # produto no meio do caminho
+    assert ids == ["beneficios", "como-funciona", "recursos", "seguranca", "planos", "perguntas", "dms", "contato"]
     assert pagina.count(INDEPENDENCIA) == 2  # Segurança e rodapé
     assert "emita e baixe" in _texto(pagina) and "copiar nota" in _texto(pagina)
     # a maquete do destaque conta o fluxo (copiar, trocar o valor, conferir, emitir) e a descrição da figura diz o mesmo;
@@ -187,16 +193,18 @@ def test_as_secoes_do_emissor_na_ordem_combinada() -> None:
     assert re.findall(r"<li>(?:<svg[^>]*>.*?</svg>)([^<]+)</li>", maquete.group()) == ["ISS", "Retenções", "Líquido"]
     for palavra in ("copiada", "valor", "conferência", "Emitida"):
         assert palavra in maquete.group(1), palavra
-    # a conferência lado a lado (lote 5): os títulos são os da tela do app, as linhas aprovadas pelo dono, sem valor de ISS,
-    # e o aviso diz o único caso em que o app pede aceite hoje; o texto ao lado diz o mesmo que a figura
+    # a conferência lado a lado (lote 5): os títulos são os da tela do app, as linhas aprovadas pelo dono, sem valor de ISS.
+    # Rodada de 11/11: o app não marca campo por campo (quem compara é a pessoa) e o aceite do ISS retido com CPF vem antes,
+    # no formulário; o aviso da figura é um dos alertas que o app mostra de verdade
     recursos = re.search(r'<section id="recursos".*?</section>', pagina, re.DOTALL)
     assert recursos and recursos.group().index('class="conferencia aparece"') < recursos.group().index('class="recursos"')
     for trecho in ("O que o app vai enviar", "O que o portal mostra", "Valor do serviço", "Tomador", "ISS retido", "Valor líquido",
-                   "ISS retido com tomador pessoa física: a conferência para e pede o seu aceite antes de seguir.",
+                   "Alíquota do ISS acima do comum: confira antes de emitir.",
                    "lado a lado o que o app vai enviar e o que o portal mostra",
-                   "e para para pedir o seu aceite quando algo foge do comum"):
+                   "o app avisa ou pede o seu aceite antes de seguir"):
         assert trecho in recursos.group(), trecho
     assert len(re.findall(r'class="conferencia__linha"', recursos.group())) == 4
+    assert "conferencia__ok" not in recursos.group()
     assert "alíquota foge do comum" not in pagina
 
 
@@ -216,7 +224,7 @@ def test_o_produto_das_dms_fala_so_do_que_faz() -> None:
             assert faz in trecho, faz
     build = HTML["build.html"]
     assert re.findall(r'<section id="([^"]+)"', build) == ["o-que-faz", "conferencia", "como-funciona", "limites",
-                                                            "perguntas", "contato"]
+                                                            "perguntas", "emissor", "contato"]
     assert "Aplicativo de computador, por enquanto" in build and "Windows" in build
     # sem ano nem contagem de empresas em lugar nenhum do que fala do Build, maquetes incluídas (decisão do dono, 08/11/2026)
     assert not re.search(r"\b20\d\d\b|\b\d+ empresas\b|\b\d+ de \d+\b", so_o_conteudo(build))
@@ -231,8 +239,8 @@ def test_a_pagina_inicial_mostra_as_duas_pistas_e_os_cartoes_levam_ao_produto() 
     pistas = re.search(r'<figure class="pistas" role="img" aria-label="([^"]+)">.*?</figure>', pagina, re.DOTALL)
     assert pistas and pistas.group().index(">Notas dos clientes</p>") < pistas.group().index(">DMS do mês</p>")
     passos = re.findall(r'<li><span class="pista__numero">\d</span>([^<]+)</li>', pistas.group())
-    assert passos == ["Copiar nota", "Conferência: ISS, retenções e líquido", "Emitida, com XML e PDF no histórico",
-                      "Encerra a DMS", "Gera a guia de ISS e emite a CND", "Compara com o mês anterior"]
+    assert passos == ["Copiar nota", "Conferência: ISS, retenções e líquido", "Emitida; XML e PDF no computador",
+                      "Encerra a DMS", "Gera a guia de ISS e emite a CND", "Mostra o que mudou desde o último fechamento"]
     assert pistas.group().count("O contador confere.") == 1 and "o contador confere" in pistas.group(1)
     conteudo = pagina[pagina.index('<main id="principal">'):pagina.index('<footer class="rodape">')]
     assert not re.search(r"\b20\d\d\b|\b\d+ empresas\b", conteudo)  # sem ano nem contagem de empresas na página da empresa
@@ -245,6 +253,7 @@ def test_a_pagina_inicial_mostra_as_duas_pistas_e_os_cartoes_levam_ao_produto() 
 def _cabecalho_sem_o_que_muda(pagina: str) -> str:
     """O cabeçalho é o mesmo em toda página; só mudam a página marcada no menu e a mensagem pronta do WhatsApp."""
     cabecalho = _cabecalho(pagina).replace(' aria-current="page"', "")
+    cabecalho = re.sub(r'\n\s*<a class="botao discreto" href="[^"]+">Entrar</a>', "", cabecalho)  # o DMS não tem Entrar
     return re.sub(r"\?text=[^\"]*", "", cabecalho)
 
 
@@ -680,4 +689,83 @@ def test_email_do_encarregado_no_dominio_da_empresa(nome: str) -> None:
     assert "gmail" not in pagina.casefold()
     rodape = pagina[pagina.index("<footer"):]
     assert "e-mail @oxygenioautomacao.com.br" in rodape
+
+
+# ------------------------------------------------------------------ L3, L4, L5 e L10 (12/11/2026)
+# O Emissor e o DMS ditos como são (rodada de 11/11/2026, docs/decisoes-site-2026-11-11.md, e as respostas do dono).
+@pytest.mark.parametrize("nome", COMERCIAIS)
+def test_download_dito_como_e(nome: str) -> None:
+    """O servidor não guarda o XML nem o PDF: cada arquivo é baixado no computador, com a extensão, e o portal pede uma
+    verificação da pessoa (dito sem a palavra que o dono deixou fora do site)."""
+    texto = _texto(HTML[nome])
+    for frase in ("ficam no histórico da empresa", "xml e pdf no histórico", "xml e pdf na pasta da empresa",
+                  "prontos para mandar ao cliente"):
+        assert frase not in texto, (nome, frase)
+    if nome == "emissao-nacional.html":
+        passo = re.search(r'<li class="passo" id="passo-3">.*?</li>', HTML[nome], re.DOTALL)
+        assert passo and all(p in passo.group() for p in ("computador", "extensão", "verificação", "Downloads"))
+
+
+def test_conferencia_sem_marca_por_campo() -> None:
+    texto = _texto(HTML["emissao-nacional.html"])
+    for frase in ("conferidos um a um", "como conferidos", "ela para e pergunta", "campo a campo"):
+        assert frase not in texto, frase
+
+
+@pytest.mark.parametrize("nome", COMERCIAIS)
+def test_sem_exagero_no_que_o_emissor_faz(nome: str) -> None:
+    texto = _texto(HTML[nome])
+    for frase in ("já está no histórico", "em um clique", "tomadores e serviços por empresa", "uma manhã",
+                  "dá conta de mais clientes", "histórico · setembro", "o mesmo login", "cclasstrib", "a nota real",
+                  "sem fila", "só o que existe"):
+        assert frase not in texto, (nome, frase)
+
+
+def test_antes_de_contratar_o_emissor() -> None:
+    pagina = HTML["emissao-nacional.html"]
+    antes = re.search(r'<div class="antes aparece">.*?</div>', pagina, re.DOTALL)
+    assert antes and all(p in antes.group() for p in ("autenticador", "Portal Nacional", "Chrome", "Edge"))
+    def resposta(i: str) -> str:
+        corpo = re.search(rf'<div class="pergunta__corpo" id="{i}">.*?</div></div>', pagina, re.DOTALL)
+        assert corpo, i
+        return corpo.group()
+    assert all(p in resposta("p7") for p in ("autenticador", "senha-mestra", "CNPJ"))
+    assert ">O que o Emissor não faz?<" in pagina and all(p in resposta("p8") for p in ("tomador", "certificado", "obra"))
+    assert ">Funciona no celular?<" in pagina and "computador" in resposta("p9")
+    assert "solicitação de cancelamento é enviada ao Emissor Nacional" in resposta("p5")
+    for botao in re.findall(r'<button\b[^>]*class="pergunta__botao"[^>]*>', pagina):
+        assert 'aria-expanded="false"' in botao
+
+
+def test_tres_planos_com_mensagem_pronta() -> None:
+    """Inicial, Empresarial e Escritório (decisão do dono, 12/11/2026), sem preço escrito; cada um leva direto ao WhatsApp
+    com a mensagem do plano; a condição dos três primeiros meses é apresentada pela equipe."""
+    pagina = HTML["emissao-nacional.html"]
+    planos = re.search(r'<section id="planos".*?</section>', pagina, re.DOTALL)
+    assert planos
+    assert re.findall(r"<h3>([^<]+)</h3>", planos.group()) == ["Inicial", "Empresarial", "Escritório"]
+    for limite in ("1 empresa", "Até 5 notas por mês", "Até 100 notas por mês", "Várias empresas"):
+        assert limite in planos.group(), limite
+    acoes = re.findall(r'<p class="plano__acao"><a class="link-seta" href="([^"]+)">([^<]+)<span class="tudo-oculto"> \(abre o WhatsApp\)</span></a></p>', planos.group())
+    assert len(acoes) == 3 and all(href.startswith(WHATSAPP + "?text=") and "plano" in href for href, _ in acoes)
+    assert "três primeiros meses" in planos.group() and "código de teste" not in planos.group()
+    contato = re.search(r'<section id="contato".*?</section>', pagina, re.DOTALL)
+    assert contato and "o Emissor ou as DMS" not in contato.group()
+
+
+def test_dms_sem_mes_anterior_e_com_licenca_por_computador() -> None:
+    """O Oxygênio DMS compara a mesma competência rodada de novo, não o mês anterior; a licença vale por computador; a
+    página dele termina no Emissor, como a do Emissor termina nele (decisão do dono, 12/11/2026)."""
+    dms = re.search(r'<section id="dms".*?</section>', HTML["emissao-nacional.html"], re.DOTALL)
+    assert dms
+    for trecho in (HTML["index.html"], HTML["build.html"], dms.group()):
+        texto = _texto(trecho)
+        for frase in ("mês anterior", "o mês com o anterior", "comparado com setembro", "login do portal</span>"):
+            assert frase not in texto, frase
+    build = HTML["build.html"]
+    assert "por computador" in build and "Oxygênio Sistema de Automação de Obrigações Fiscais Municipal" in build
+    emissor = re.search(r'<section id="emissor".*?</section>', build, re.DOTALL)
+    assert emissor and 'href="emissao-nacional.html"' in emissor.group()
+    for nome in PAGINAS:  # o nome antigo saiu do site
+        assert "Build" not in HTML[nome][HTML[nome].index("<body"):], nome
 

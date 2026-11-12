@@ -387,6 +387,11 @@ html.js .aparece:not(.em-foco) .fatos li { opacity: 0; transform: translateY(var
 .plano li { padding-left: 1.5rem; background: no-repeat left .35em / 1rem url("imagens/check.svg"); }
 .plano__acao { margin-top: auto; }
 .planos__nota { margin-top: 1.5rem; color: var(--pagina-texto-suave); font-size: .9375rem; }
+/* L4 (12/11/2026): o que ter em mãos antes de começar, dentro de "Como funciona" */
+.antes { margin-top: 2.5rem; padding: 1.5rem 1.75rem; border: 1px solid var(--pagina-linha); border-radius: var(--raio); background: var(--pagina-superficie); max-width: 46rem; }
+.antes h3 { margin-bottom: .75rem; }
+.antes ul { margin: 0; padding-left: 1.25rem; }
+.antes li + li { margin-top: .4rem; }
 
 /* perguntas: altura animada, contida no item, e o ícone que gira */
 .perguntas { display: grid; gap: .5rem; max-width: 46rem; }
@@ -438,7 +443,7 @@ html.js .pergunta.aberta .pergunta__texto { visibility: visible; transition-dela
   .recursos { grid-template-columns: repeat(2, 1fr); }
   .produto { grid-template-columns: auto 1fr; align-items: start; }
   .seguranca { grid-template-columns: auto 1fr; gap: 3rem; align-items: start; }
-  .planos { grid-template-columns: repeat(2, 1fr); max-width: 52rem; }
+  .planos { grid-template-columns: repeat(3, 1fr); }  /* três planos desde 12/11/2026 */
   .fatos { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2.5rem; }
   .rodape__grade { grid-template-columns: 1fr 1fr; }
 }

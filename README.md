@@ -1,7 +1,7 @@
 # Site da Oxygênio Automação
 
 O site institucional e comercial da Oxygênio Automação, em `www.oxygenioautomacao.com.br`: a empresa, os dois
-produtos (a Oxygênio Emissão Nacional, emissor de NFS-e para escritórios de contabilidade, e o Oxygenio Build, o
+produtos (a Oxygênio Emissão Nacional, emissor de NFS-e para escritórios de contabilidade, e o Oxygênio DMS, o
 aplicativo que encerra as DMS da prefeitura), os textos legais e o contato pelo WhatsApp.
 
 É um site **estático**: só HTML, CSS, um script próprio para o movimento, fontes e imagens, tudo nesta pasta. Não tem
@@ -13,7 +13,7 @@ servidor, banco, formulário nem cookie. Fica hospedado no GitHub Pages, e cada 
 |---|---|
 | `index.html` | A empresa: o que faz, os dois produtos, contato |
 | `emissao-nacional.html` | A Oxygênio Emissão Nacional, o emissor de NFS-e |
-| `build.html` | O Oxygenio Build, o aplicativo das DMS |
+| `build.html` | O Oxygênio DMS, o aplicativo das DMS |
 | `termos-de-uso.html` | Termos de uso do emissor (rascunho, com data e versão no rodapé) |
 | `privacidade.html` | Política de privacidade (rascunho, com data e versão no rodapé) |
 | `lgpd.html` | Como a empresa trata dados pessoais, em linguagem simples (rascunho) |

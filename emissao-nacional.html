@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="robots" content="noindex, nofollow">
 <title>Oxygênio Emissão Nacional: emissor de NFS-e para escritórios de contabilidade</title>
-<meta name="description" content="A Oxygênio Emissão Nacional, emissor de NFS-e para escritórios de contabilidade: os clientes cadastrados uma vez, a nota do mês copiada da anterior e o histórico com XML e PDF.">
+<meta name="description" content="A Oxygênio Emissão Nacional, emissor de NFS-e para escritórios de contabilidade: os clientes cadastrados uma vez e a nota do mês copiada da anterior, conferida antes de emitir.">
 <link rel="icon" href="imagens/oxygenio_badge_192.png" type="image/png">
 <link rel="stylesheet" href="estilos.css">
 <link rel="stylesheet" href="pagina.css">
@@ -25,7 +25,7 @@
     <nav class="cabecalho__menu" aria-label="Páginas do site">
       <a href="index.html">A empresa</a>
       <a href="emissao-nacional.html" aria-current="page">Emissão Nacional</a>
-      <a href="build.html">Build</a>
+      <a href="build.html">DMS</a>
     </nav>
     <div class="cabecalho__acoes">
       <a class="botao discreto" href="https://emissor.oxygenioautomacao.com.br/">Entrar</a>
@@ -47,7 +47,7 @@
         <a class="link-seta" href="#como-funciona">Ver como funciona</a>
       </p>
     </div>
-    <figure class="maquete maquete--emissor" role="img" aria-label="Maquete do painel do emissor, com dados de exemplo: a nota nº 34 do mês passado é copiada com o botão Copiar nota, a nota nº 35 nasce preenchida, o valor é trocado, a conferência marca ISS, retenções e líquido como conferidos, e a nota passa de Processando para Emitida.">
+    <figure class="maquete maquete--emissor" role="img" aria-label="Maquete do painel do emissor, com dados de exemplo: a nota nº 34 do mês passado é copiada com o botão Copiar nota, a nota nº 35 nasce preenchida, o valor é trocado, a conferência mostra ISS, retenções e líquido para você conferir, e a nota passa de Processando para Emitida.">
       <div class="maquete__janela" aria-hidden="true">
         <div class="maquete__topo">
           <img src="imagens/oxygenio_nfse_icon.svg" width="28" height="28" alt="">
@@ -95,8 +95,8 @@
     <div class="beneficios" data-cascata>
       <article class="beneficio beneficio--grande aparece">
         <div>
-          <h3>Copiar nota: a recorrente do cliente em um clique.</h3>
-          <p>A nota de cada cliente já está no histórico. Copie a do mês passado, troque o valor ou a competência e emita. Código de serviço, NBS, cClassTrib, descrição e retenções vêm junto, sem redigitar e sem copiar e colar entre abas.</p>
+          <h3>Copiar nota: a recorrente do cliente nasce da do mês passado.</h3>
+          <p>Depois da primeira nota de cada cliente pelo Emissor, a do mês seguinte nasce dela: copie, troque o valor ou a competência e emita. O código do serviço, a NBS (Nomenclatura Brasileira de Serviços), a classificação do IBS/CBS, a descrição e as retenções vêm junto, sem redigitar e sem copiar e colar entre abas.</p>
         </div>
         <p class="fluxo" aria-hidden="true">
           <span class="fluxo__nota">Nota nº 34<span>setembro · Emitida</span></span>
@@ -108,15 +108,15 @@
       </article>
       <article class="beneficio aparece">
         <h3>Todos os clientes numa conta só.</h3>
-        <p>Os prestadores para quem o escritório emite ficam cadastrados num único sistema: login do portal no cofre, tomadores, serviços e alíquotas de cada um. Troca de empresa no topo da tela, sem sair e entrar em portal por cliente.</p>
+        <p>Os prestadores para quem o escritório emite ficam cadastrados num único sistema, cada um com o login do portal no cofre, os serviços e as alíquotas. Os tomadores ficam no cadastro do escritório e valem para todas as empresas. Troca de empresa no topo da tela, sem sair e entrar em portal por cliente.</p>
       </article>
       <article class="beneficio aparece">
-        <h3>Tempo de volta para o escritório.</h3>
-        <p>O que tomava uma manhã de portal, senha e copia-e-cola vira alguns minutos <span class="a-confirmar">tempos a confirmar</span>. A nota do cliente sai no dia em que ele pede, e a mesma equipe dá conta de mais clientes.</p>
+        <h3>Menos portal, senha e copia-e-cola.</h3>
+        <p>O cadastro de cada cliente fica guardado, e a nota do mês nasce da anterior. Você confere e emite, sem abrir o portal de cliente em cliente.</p>
       </article>
       <article class="beneficio aparece">
         <h3>Cada cliente do seu jeito, guardado uma vez.</h3>
-        <p>MEI, optante ou não do Simples; com ou sem retenção de IR, CSLL, PIS/COFINS e ISS. Isso fica no cadastro do serviço de cada empresa e vale para todas as notas seguintes. A tela só mostra o que vale para aquele cliente.</p>
+        <p>MEI, optante ou não do Simples; com ou sem retenção de IR, CSLL, PIS/COFINS e ISS. Isso fica no cadastro do serviço de cada empresa e vale para todas as notas seguintes. O cadastro do MEI tem menos campos, e a tela da nota segue isso.</p>
       </article>
     </div>
   </div>
@@ -133,7 +133,7 @@
         <li class="passo" id="passo-1">
           <span class="passo__numero" aria-hidden="true">1</span>
           <h3>Cadastre o prestador</h3>
-          <p>Razão social, CNPJ, login do portal (vai para o cofre), opção do Simples e regime. Depois os tomadores e os serviços, com código, NBS, alíquota e as retenções de cada um.</p>
+          <p>Digite o CNPJ e a senha do portal, que vai para o cofre: o app entra no portal e traz o nome, o endereço e a opção do Simples. Depois cadastre os serviços, com código, NBS, alíquota e as retenções de cada um, e os tomadores, que valem para todas as empresas.</p>
           <figure class="mini" aria-hidden="true">
             <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Prestadores · Nova empresa</div>
             <div class="mini__corpo">
@@ -149,7 +149,7 @@
           <h3>Monte a nota, ou copie a do mês passado</h3>
           <p>Escolha o tomador e o serviço, ou abra o histórico e clique em Copiar nota. A conferência mostra o ISS, as retenções e o líquido antes de emitir.</p>
           <figure class="mini" aria-hidden="true">
-            <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Histórico · setembro de 2026</div>
+            <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Histórico de notas</div>
             <div class="mini__corpo">
               <div class="mini__linha mini__linha--nova"><span>Nota nº 35 · Chapecó Serviços ME</span><span class="mini__chip mini__chip--arquivo">Pronta para conferir</span></div>
               <div class="mini__linha foco"><span>Nota nº 34 · Chapecó Serviços ME</span><span class="mini__botao mini__botao--discreto">Copiar nota</span></div>
@@ -161,13 +161,13 @@
         <li class="passo" id="passo-3">
           <span class="passo__numero" aria-hidden="true">3</span>
           <h3>Emita e baixe</h3>
-          <p>A nota vai ao Emissor Nacional em nome do cliente. O XML e o PDF ficam no histórico da empresa, por competência, prontos para mandar ao cliente.</p>
+          <p>A nota vai ao Emissor Nacional em nome do cliente. Depois, você baixa o XML e o PDF no computador, com a extensão do Emissor, através do portal, que pede uma verificação. Os arquivos vão para a pasta Downloads, separados por empresa e mês. No celular, você emite e confere.</p>
           <figure class="mini" aria-hidden="true">
             <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Nota nº 35 · outubro de 2026</div>
             <div class="mini__corpo">
               <div class="mini__linha"><span>Situação</span><span class="mini__chip">Emitida</span></div>
-              <div class="mini__linha"><span>Arquivos</span><span><span class="mini__chip mini__chip--arquivo">XML</span> <span class="mini__chip mini__chip--arquivo">PDF</span></span></div>
-              <div class="mini__linha"><span>Pasta</span><span>REPRESENTACOES…/2026-10</span></div>
+              <div class="mini__linha"><span>XML e PDF</span><span class="mini__chip mini__chip--arquivo">Baixados no computador</span></div>
+              <div class="mini__linha"><span>Pasta</span><span>Downloads › NFS-e › 2026-10</span></div>
             </div>
           </figure>
         </li>
@@ -183,7 +183,7 @@
           </div>
         </figure>
         <figure class="mini">
-          <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Histórico · setembro de 2026</div>
+          <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Histórico de notas</div>
           <div class="mini__corpo">
             <div class="mini__linha mini__linha--nova"><span>Nota nº 35 · Chapecó Serviços ME</span><span class="mini__chip mini__chip--arquivo">Pronta para conferir</span></div>
             <div class="mini__linha foco"><span>Nota nº 34 · Chapecó Serviços ME</span><span class="mini__botao mini__botao--discreto">Copiar nota</span></div>
@@ -195,11 +195,20 @@
           <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Nota nº 35 · outubro de 2026</div>
           <div class="mini__corpo">
             <div class="mini__linha"><span>Situação</span><span class="mini__chip">Emitida</span></div>
-            <div class="mini__linha"><span>Arquivos</span><span><span class="mini__chip mini__chip--arquivo">XML</span> <span class="mini__chip mini__chip--arquivo">PDF</span></span></div>
-            <div class="mini__linha"><span>Pasta</span><span>REPRESENTACOES…/2026-10</span></div>
+            <div class="mini__linha"><span>XML e PDF</span><span class="mini__chip mini__chip--arquivo">Baixados no computador</span></div>
+            <div class="mini__linha"><span>Pasta</span><span>Downloads › NFS-e › 2026-10</span></div>
           </div>
         </figure>
       </div>
+    </div>
+    <div class="antes aparece">
+      <h3>Antes de começar, tenha em mãos</h3>
+      <ul>
+        <li>O celular de cada pessoa da equipe, com um aplicativo autenticador, para o código de cada entrada.</li>
+        <li>O login e a senha do Portal Nacional de cada cliente.</li>
+        <li>O computador do escritório com o Chrome ou o Edge, para baixar o XML e o PDF com a extensão do Emissor.</li>
+        <li>Para empresa do Simples, a alíquota do mês.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -212,17 +221,17 @@
     <div class="conferencia aparece">
       <div>
         <h3>A conferência, antes de emitir</h3>
-        <p>Antes de emitir, a conferência põe lado a lado o que o app vai enviar e o que o portal mostra, campo a campo. Bateu, você emite. Algo fora do comum, ela para e pergunta.</p>
+        <p>Antes de emitir, a conferência põe lado a lado o que o app vai enviar e o que o portal mostra. Você confere e emite. Se algo foge do comum, o app avisa antes.</p>
       </div>
-      <figure class="conferencia__figura" role="img" aria-label="Maquete da conferência, com dados de exemplo: duas colunas, o que o app vai enviar e o que o portal mostra, com valor do serviço, tomador, ISS retido e valor líquido conferidos um a um, e um aviso de que o ISS retido com tomador pessoa física pede o seu aceite antes de seguir.">
+      <figure class="conferencia__figura" role="img" aria-label="Maquete da conferência, com dados de exemplo: duas colunas, o que o app vai enviar e o que o portal mostra, com valor do serviço, tomador, ISS retido e valor líquido, para você comparar, e um aviso do app sobre a alíquota do ISS.">
         <div class="mini" aria-hidden="true">
           <div class="mini__topo"><img src="imagens/oxygenio_nfse_icon.svg" width="20" height="20" alt="">Conferência · Nota nº 35</div>
           <div class="conferencia__cabeca"><span>O que o app vai enviar</span><span>O que o portal mostra</span></div>
-          <div class="conferencia__linha"><span><small>Valor do serviço</small>1.500,00</span><span>1.500,00</span><span class="conferencia__ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 7-8.5 8.5L5 11"/></svg></span></div>
-          <div class="conferencia__linha"><span><small>Tomador</small>Chapecó Serviços ME</span><span>Chapecó Serviços ME</span><span class="conferencia__ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 7-8.5 8.5L5 11"/></svg></span></div>
-          <div class="conferencia__linha"><span><small>ISS retido</small>não</span><span>não</span><span class="conferencia__ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 7-8.5 8.5L5 11"/></svg></span></div>
-          <div class="conferencia__linha"><span><small>Valor líquido</small>1.500,00</span><span>1.500,00</span><span class="conferencia__ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 7-8.5 8.5L5 11"/></svg></span></div>
-          <p class="conferencia__aviso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>ISS retido com tomador pessoa física: a conferência para e pede o seu aceite antes de seguir.</p>
+          <div class="conferencia__linha"><span><small>Valor do serviço</small>1.500,00</span><span>1.500,00</span></div>
+          <div class="conferencia__linha"><span><small>Tomador</small>Chapecó Serviços ME</span><span>Chapecó Serviços ME</span></div>
+          <div class="conferencia__linha"><span><small>ISS retido</small>não</span><span>não</span></div>
+          <div class="conferencia__linha"><span><small>Valor líquido</small>1.500,00</span><span>1.500,00</span></div>
+          <p class="conferencia__aviso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Alíquota do ISS acima do comum: confira antes de emitir.</p>
         </div>
         <figcaption>Maquete com dados de exemplo.</figcaption>
       </figure>
@@ -234,57 +243,29 @@
       </article>
       <article class="recurso aparece">
         <span class="recurso__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
-        <div><h3>Mais de um computador, um login</h3><p>O mesmo login vale em mais de um computador. O sistema não deixa duas notas da mesma empresa saírem ao mesmo tempo.</p></div>
+        <div><h3>Cada pessoa com o seu acesso</h3><p>Cada pessoa da equipe entra com o próprio acesso, em qualquer computador do escritório. O sistema não deixa duas notas da mesma empresa saírem ao mesmo tempo.</p></div>
       </article>
       <article class="recurso aparece">
         <span class="recurso__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></span>
-        <div><h3>Tomadores e serviços por empresa</h3><p>Serviço com nome (“Prestação com dados bancários”, “Prestação PIX”), código, NBS e as retenções de cada um.</p></div>
+        <div><h3>Tomadores do escritório, serviços de cada empresa</h3><p>O tomador cadastrado vale para todas as empresas. O serviço tem nome (“Prestação com dados bancários”, “Prestação PIX”), código, NBS e as retenções de cada um.</p></div>
       </article>
       <article class="recurso aparece">
         <span class="recurso__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>
-        <div><h3>Conferência com os tributos</h3><p>ISS, retenções e líquido calculados antes de emitir, e para para pedir o seu aceite quando algo foge do comum.</p></div>
+        <div><h3>Conferência com os tributos</h3><p>ISS, retenções e líquido calculados antes de emitir. Quando algo foge do comum, o app avisa ou pede o seu aceite antes de seguir.</p></div>
       </article>
       <article class="recurso aparece">
         <span class="recurso__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span>
-        <div><h3>Cancelamento pelo sistema</h3><p>Com o motivo, registrado no histórico junto da nota.</p></div>
+        <div><h3>Cancelamento pelo sistema</h3><p>Informe o motivo, e a solicitação de cancelamento é enviada ao Emissor Nacional. Fica registrada no histórico, junto da nota.</p></div>
       </article>
       <article class="recurso aparece">
         <span class="recurso__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></span>
-        <div><h3>Histórico por competência</h3><p>XML e PDF na pasta da empresa e do mês. Busca por nome ou CNPJ em qualquer tela.</p></div>
+        <div><h3>Histórico por competência</h3><p>As notas de cada empresa por mês, com a situação, a chave de acesso e o que já foi baixado. Busca por nome ou CNPJ em qualquer tela.</p></div>
       </article>
     </div>
   </div>
 </section>
 
-<section id="dms" class="faixa" aria-labelledby="t-dms">
-  <div class="largura">
-    <div class="faixa__cabeca">
-      <h2 id="t-dms">Também da Oxygênio</h2>
-    </div>
-    <article class="produto aparece">
-      <img class="produto__marca" src="imagens/oxygenio_icon_256.png" width="256" height="256" alt="Logo do Oxygenio Build, o aplicativo das DMS">
-      <div>
-        <h3>Oxygenio Build</h3>
-        <p class="produto__frase">Encerramento das DMS: aplicativo para Windows que faz o fechamento mensal do ISS no sistema da prefeitura, empresa por empresa, sem o escritório clicar tela por tela.</p>
-        <ul>
-          <li>Encerra a DMS de serviços prestados e a de serviços tomados.</li>
-          <li>Gera e guarda a guia de ISS.</li>
-          <li>Baixa os XML das notas, normais e canceladas, e gera o PDF de cada uma.</li>
-          <li>Emite a CND municipal.</li>
-          <li>Compara cada fechamento com o anterior e aponta nota que entrou, sumiu, foi cancelada ou mudou de valor.</li>
-        </ul>
-        <p class="produto__nota"><span class="a-confirmar">lista a conferir</span></p>
-        <dl class="produto__ficha">
-          <div><dt>Formato</dt><dd>Aplicativo de computador, por enquanto</dd></div>
-          <div><dt>Sistema</dt><dd>Windows</dd></div>
-        </dl>
-        <p class="produto__acoes"><a class="botao" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20quero%20contratar%20o%20Oxygenio%20Build%20para%20o%20meu%20escrit%C3%B3rio.">Contratar<span class="tudo-oculto"> (abre o WhatsApp)</span></a> <a class="link-seta" href="build.html">Conhecer o Build</a></p>
-      </div>
-    </article>
-  </div>
-</section>
-
-<section id="seguranca" class="faixa faixa--suave" aria-labelledby="t-seguranca">
+<section id="seguranca" class="faixa" aria-labelledby="t-seguranca">
   <div class="largura">
     <div class="faixa__cabeca">
       <h2 id="t-seguranca">Segurança</h2>
@@ -299,7 +280,7 @@
       <ul class="fatos">
         <li><strong>Senhas no cofre</strong>O login do portal de cada cliente fica cifrado no servidor e nas cópias de segurança. Ele só se abre dentro do servidor, depois que o escritório digita a senha-mestra, para o Emissor falar com o portal em nome do cliente. A Oxygênio não guarda a senha-mestra e não consegue recuperá-la. A senha não aparece na tela nem nos registros.</li>
         <li><strong>Entrada com verificação em duas etapas</strong>Além da senha, o acesso pede o código do aplicativo no celular. Muitas tentativas erradas seguidas freiam a entrada por um tempo.</li>
-        <li><strong>Produção com uma confirmação a mais</strong>A nota real pede uma confirmação além da conferência, e a faixa no alto da tela mostra o ambiente o tempo todo.</li>
+        <li><strong>Produção com uma confirmação a mais</strong>A nota em produção, a que vale de verdade, pede uma confirmação além da conferência, e a faixa no alto da tela mostra o ambiente o tempo todo.</li>
         <li><strong>Servidor na Amazon, conexão protegida</strong>Hospedado em servidor da Amazon (AWS), com acesso por HTTPS.</li>
       </ul>
     </div>
@@ -308,7 +289,7 @@
   </div>
 </section>
 
-<section id="planos" class="faixa" aria-labelledby="t-planos">
+<section id="planos" class="faixa faixa--suave" aria-labelledby="t-planos">
   <div class="largura">
     <div class="faixa__cabeca">
       <h2 id="t-planos">Planos do Emissor</h2>
@@ -323,25 +304,35 @@
           <li>Até 5 notas por mês</li>
           <li>Sem mensalidade</li>
         </ul>
-        <p class="plano__acao"><a class="link-seta" href="#contato">Pedir acesso</a></p>
+        <p class="plano__acao"><a class="link-seta" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20pelo%20plano%20Inicial%20da%20Oxyg%C3%AAnio%20Emiss%C3%A3o%20Nacional.">Pedir acesso<span class="tudo-oculto"> (abre o WhatsApp)</span></a></p>
+      </article>
+      <article class="plano aparece">
+        <h3>Empresarial</h3>
+        <p class="plano__para">Para uma empresa que emite muitas notas.</p>
+        <ul>
+          <li>1 empresa</li>
+          <li>Até 100 notas por mês</li>
+          <li>Preço combinado com a equipe</li>
+        </ul>
+        <p class="plano__acao"><a class="link-seta" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20quero%20o%20plano%20Empresarial%20da%20Oxyg%C3%AAnio%20Emiss%C3%A3o%20Nacional.">Falar com a equipe<span class="tudo-oculto"> (abre o WhatsApp)</span></a></p>
       </article>
       <article class="plano plano--escolhido aparece">
         <span class="plano__etiqueta">Para o escritório</span>
         <h3>Escritório</h3>
         <p class="plano__para">Para todos os clientes que emitem nota.</p>
         <ul>
-          <li>Todos os prestadores que o escritório atende <span class="a-confirmar">limites a confirmar</span></li>
-          <li>O mesmo login em mais de um computador</li>
+          <li>Várias empresas</li>
+          <li>Cada pessoa da equipe com o seu acesso</li>
           <li>Preço combinado com a equipe</li>
         </ul>
-        <p class="plano__acao"><a class="link-seta" href="#contato">Falar com a equipe</a></p>
+        <p class="plano__acao"><a class="link-seta" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20quero%20o%20plano%20Escrit%C3%B3rio%20da%20Oxyg%C3%AAnio%20Emiss%C3%A3o%20Nacional%20para%20o%20meu%20escrit%C3%B3rio.">Falar com a equipe<span class="tudo-oculto"> (abre o WhatsApp)</span></a></p>
       </article>
     </div>
-    <p class="planos__nota">Com um código de teste, o plano Escritório fica liberado por 30 dias <span class="a-confirmar">prazo a confirmar</span>.</p>
+    <p class="planos__nota">Os planos Empresarial e Escritório têm uma condição especial nos três primeiros meses. Pergunte à equipe pelo WhatsApp.</p>
   </div>
 </section>
 
-<section id="perguntas" class="faixa faixa--suave" aria-labelledby="t-perguntas">
+<section id="perguntas" class="faixa" aria-labelledby="t-perguntas">
   <div class="largura">
     <div class="faixa__cabeca">
       <h2 id="t-perguntas">Perguntas sobre o Emissor</h2>
@@ -360,12 +351,12 @@
         <div class="pergunta__corpo" id="p3"><div class="pergunta__texto"><p>Sim. O cadastro do MEI tem menos campos, e a tela da nota segue isso.</p></div></div>
       </div>
       <div class="pergunta">
-        <h3><button type="button" class="pergunta__botao" id="p4-botao" aria-expanded="false" aria-controls="p4">Posso usar em mais de um computador?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
-        <div class="pergunta__corpo" id="p4"><div class="pergunta__texto"><p>Sim, com o mesmo login. O sistema só não deixa a mesma empresa emitir duas notas ao mesmo tempo.</p></div></div>
+        <h3><button type="button" class="pergunta__botao" id="p4-botao" aria-expanded="false" aria-controls="p4">Cada pessoa da equipe tem o seu acesso?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
+        <div class="pergunta__corpo" id="p4"><div class="pergunta__texto"><p>Sim. Cada pessoa entra com o próprio e-mail, a própria senha e o código do próprio celular, em qualquer computador do escritório. O sistema só não deixa a mesma empresa emitir duas notas ao mesmo tempo.</p></div></div>
       </div>
       <div class="pergunta">
         <h3><button type="button" class="pergunta__botao" id="p5-botao" aria-expanded="false" aria-controls="p5">E se eu errar uma nota?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
-        <div class="pergunta__corpo" id="p5"><div class="pergunta__texto"><p>Cancele pelo próprio sistema, com o motivo. O cancelamento fica no histórico, junto da nota.</p></div></div>
+        <div class="pergunta__corpo" id="p5"><div class="pergunta__texto"><p>Cancele pelo sistema informando o motivo, e a solicitação de cancelamento é enviada ao Emissor Nacional. O cancelamento fica no histórico, junto da nota.</p></div></div>
       </div>
       <div class="pergunta">
         <h3><button type="button" class="pergunta__botao" id="p6-botao" aria-expanded="false" aria-controls="p6">Onde ficam os dados?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
@@ -373,16 +364,51 @@
       </div>
       <div class="pergunta">
         <h3><button type="button" class="pergunta__botao" id="p7-botao" aria-expanded="false" aria-controls="p7">Como começo?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
-        <div class="pergunta__corpo" id="p7"><div class="pergunta__texto"><p>Chame no WhatsApp. Você recebe o acesso, cadastra o primeiro prestador e já emite a primeira nota.</p></div></div>
+        <div class="pergunta__corpo" id="p7"><div class="pergunta__texto"><p>Chame no WhatsApp: a equipe combina o acesso. No primeiro acesso você cria a senha, liga o aplicativo autenticador do celular e cria a senha-mestra, que ninguém consegue recuperar. Depois cadastra o prestador com o CNPJ e a senha do portal (o app traz o nome, o endereço e a opção do Simples), os serviços e os tomadores, e emite. Empresa do Simples precisa da alíquota do mês: o Início avisa quando falta.</p></div></div>
+      </div>
+      <div class="pergunta">
+        <h3><button type="button" class="pergunta__botao" id="p8-botao" aria-expanded="false" aria-controls="p8">O que o Emissor não faz?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
+        <div class="pergunta__corpo" id="p8"><div class="pergunta__texto"><p>Não envia a nota ao tomador nem ao cliente: o envio é do escritório. Não emite sozinho: cada nota sai depois que alguém do escritório confere e confirma. Não decide regra fiscal: alíquota, retenção e local de incidência são do contador. Não atende empresa que só entra no portal com certificado digital. E para, sem emitir, em nota de obra ou de evento, que seguem pelo próprio portal.</p></div></div>
+      </div>
+      <div class="pergunta">
+        <h3><button type="button" class="pergunta__botao" id="p9-botao" aria-expanded="false" aria-controls="p9">Funciona no celular?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
+        <div class="pergunta__corpo" id="p9"><div class="pergunta__texto"><p>Para emitir e conferir, sim. Para baixar o XML e o PDF, use o computador do escritório, com o Chrome ou o Edge e a extensão do Emissor.</p></div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="dms" class="faixa faixa--suave" aria-labelledby="t-dms">
+  <div class="largura">
+    <div class="faixa__cabeca">
+      <h2 id="t-dms">Também da Oxygênio</h2>
+    </div>
+    <article class="produto aparece">
+      <img class="produto__marca" src="imagens/oxygenio_icon_256.png" width="256" height="256" alt="Logo do Oxygênio DMS, o aplicativo das DMS">
+      <div>
+        <h3>Oxygênio DMS</h3>
+        <p class="produto__frase">Encerramento das DMS: aplicativo para Windows que faz o fechamento mensal do ISS no portal da prefeitura, empresa por empresa, sem o escritório clicar tela por tela. Hoje ele trabalha para ampliar as prefeituras atendidas: diga qual é a sua.</p>
+        <ul>
+          <li>Encerra a DMS de serviços prestados e a de serviços tomados.</li>
+          <li>Gera e guarda a guia de ISS.</li>
+          <li>Baixa os XML das notas, normais e canceladas, e gera o PDF de cada uma.</li>
+          <li>Emite a CND municipal.</li>
+          <li>Rodado de novo o mesmo mês, mostra o que mudou desde o fechamento anterior: nota que entrou, sumiu, foi cancelada ou mudou de valor.</li>
+        </ul>
+        <dl class="produto__ficha">
+          <div><dt>Formato</dt><dd>Aplicativo de computador, por enquanto</dd></div>
+          <div><dt>Sistema</dt><dd>Windows</dd></div>
+        </dl>
+        <p class="produto__acoes"><a class="botao" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20quero%20contratar%20o%20Oxyg%C3%AAnio%20DMS%20para%20o%20meu%20escrit%C3%B3rio.">Contratar<span class="tudo-oculto"> (abre o WhatsApp)</span></a> <a class="link-seta" href="build.html">Conhecer o Oxygênio DMS</a></p>
+      </div>
+    </article>
   </div>
 </section>
 
 <section id="contato" class="chamada" aria-labelledby="t-contato">
   <div class="largura">
     <h2 id="t-contato">Comece pelos clientes que mais dão trabalho no começo do mês.</h2>
-    <p class="apoio">Chame no WhatsApp, diga se é o Emissor ou as DMS e quantas empresas emitem nota. A gente combina o acesso.</p>
+    <p class="apoio">Chame no WhatsApp e diga quantas empresas emitem nota. A gente combina o acesso.</p>
     <p class="chamada__acoes">
       <a class="botao whatsapp" href="https://wa.me/5544991160421?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Oxyg%C3%AAnio%20Automa%C3%A7%C3%A3o.">Chamar no WhatsApp</a>
       <span class="numero">(44) 99116-0421</span>
@@ -407,7 +433,7 @@
       <ul class="rodape__links">
         <li><a href="index.html">A empresa</a></li>
         <li><a href="emissao-nacional.html">Emissão Nacional</a></li>
-        <li><a href="build.html">Build</a></li>
+        <li><a href="build.html">DMS</a></li>
         <li><a href="termos-de-uso.html">Termos de uso</a></li>
         <li><a href="privacidade.html">Privacidade</a></li>
         <li><a href="lgpd.html">Proteção de dados</a></li>
