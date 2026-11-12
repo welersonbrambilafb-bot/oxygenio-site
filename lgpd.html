@@ -49,16 +49,17 @@
   <dl class="legal__lista">
     <div><dt>A conta do escritório: a Oxygênio é controladora</dt><dd>Nome, e-mail, telefone, CNPJ e login da conta no emissor. A Oxygênio decide como tratar esses dados e responde por eles.</dd></div>
     <div><dt>Os clientes do escritório e os tomadores: a Oxygênio é operadora</dt><dd>Os prestadores para quem o escritório emite nota, os tomadores e os dados das notas. O escritório é quem decide (controlador): ele tem o contrato e a autorização dos clientes. A Oxygênio trata esses dados por conta do escritório, só para prestar o serviço, e ajuda o escritório a atender os pedidos dos titulares. <span class="a-confirmar">papéis a confirmar com advogado</span></dd></div>
-    <div><dt>O Oxygenio Build: a Oxygênio é só fornecedora do programa</dt><dd>É um aplicativo instalado no computador do escritório. Os dados que ele usa (empresas, login do portal da prefeitura, notas, guias) ficam nesse computador e vão só ao portal da prefeitura. A Oxygênio não os recebe, então não é controladora nem operadora deles.</dd></div>
+    <div><dt>O Oxygênio DMS: a Oxygênio é só fornecedora do programa</dt><dd>É um aplicativo instalado no computador do escritório. Os dados que ele usa (empresas, login do portal da prefeitura, notas, guias) ficam nesse computador e vão ao portal da prefeitura. Quando você usa o botão Atualizar razão social, ele manda só o número do CNPJ a serviços públicos de consulta. A Oxygênio não recebe esses dados, então não é controladora nem operadora deles.</dd></div>
   </dl>
 
   <h2 id="fazemos">3. O que fazemos</h2>
   <ul>
-    <li>Guardamos só o que o serviço precisa para emitir a nota e manter o histórico fiscal.</li>
-    <li>Ciframos os logins dos portais com uma senha-mestra que só o escritório conhece.</li>
-    <li>Usamos conexão protegida (HTTPS), verificação em duas etapas e bloqueio depois de muitas tentativas erradas.</li>
-    <li>Registramos quem fez o quê e quando, sem senhas, para segurança e para esclarecer dúvidas.</li>
-    <li>Apagamos os dados quando a conta termina, depois do prazo para o escritório baixar o que é dele.</li>
+    <li>Guardamos só o que o serviço precisa para emitir a nota e manter o histórico das notas. O XML e o PDF não ficam conosco: o escritório os baixa para o computador dele.</li>
+    <li>Ciframos os logins dos portais. Eles só se abrem dentro do servidor, depois que o escritório digita a senha-mestra, para emitir e cancelar notas.</li>
+    <li>Usamos conexão protegida (HTTPS), verificação em duas etapas e freio da entrada depois de muitas tentativas erradas.</li>
+    <li>Registramos as entradas na conta e cada emissão e cancelamento, com data, hora e origem da conexão, sem senhas, para segurança e para esclarecer dúvidas.</li>
+    <li>Guardamos uma cópia de segurança por dia, cifrada, fora da Amazon.</li>
+    <li>Apagamos os dados quando a conta termina, e as cópias de segurança somem no prazo delas <span class="a-confirmar">apagamento a confirmar</span>.</li>
     <li>Publicamos esta página e a política com data e versão, e avisamos quando mudam.</li>
   </ul>
 
@@ -66,7 +67,7 @@
   <ul>
     <li>Não vendemos, não cedemos e não usamos dados para publicidade. Não traçamos perfil de ninguém.</li>
     <li>Não acessamos o Portal Nacional em nome de um prestador sem um comando feito na conta do escritório.</li>
-    <li>Não lemos as senhas dos portais: elas ficam cifradas e a chave é a senha-mestra do escritório.</li>
+    <li>Não usamos as senhas dos portais para nada além de emitir e cancelar notas por comando do escritório.</li>
     <li>Não pedimos documento de identidade, selfie, dados bancários nem dados de cartão, e não tratamos dados sensíveis nem de menores de 18 anos.</li>
     <li>Não usamos cookie neste site, nem contador de visitas.</li>
     <li>Nunca pedimos senha, senha-mestra ou código do celular por WhatsApp, e-mail ou telefone.</li>
@@ -77,12 +78,12 @@
   <p>Se achar que a Oxygênio não tratou bem o seu pedido, você pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD), pelo site gov.br/anpd.</p>
 
   <h2 id="encarregado">6. O encarregado</h2>
-  <p>O encarregado pelo tratamento de dados pessoais da OXYGENIO AUTOMACAO INOVA SIMPLES (I.S.) <span class="a-confirmar">razão social a confirmar</span> é o canal entre você, a Oxygênio e a ANPD: Welerson Fábio Brambila <span class="a-confirmar">encarregado a confirmar</span>, e-mail welersonbrambila.fb@gmail.com <span class="a-confirmar">e-mail a confirmar</span>. Escreva "LGPD" no assunto para o pedido andar mais rápido.</p>
+  <p>O encarregado pelo tratamento de dados pessoais da OXYGENIO AUTOMACAO INOVA SIMPLES (I.S.) <span class="a-confirmar">razão social a confirmar</span> é o canal entre você, a Oxygênio e a ANPD: Welerson Fábio Brambila <span class="a-confirmar">encarregado a confirmar</span>, e-mail @oxygenioautomacao.com.br <span class="a-confirmar">e-mail a confirmar</span>. Escreva "LGPD" no assunto para o pedido andar mais rápido.</p>
 
   <h2 id="incidentes">7. Se algo der errado</h2>
   <p>Se um incidente de segurança atingir dados pessoais e puder causar risco ou dano relevante, a Oxygênio comunica o escritório afetado o quanto antes, com o que aconteceu, quais dados foram atingidos e o que foi feito, e comunica a ANPD, como manda o artigo 48 da LGPD.</p>
 
-  <p class="versao">Versão 0.3, rascunho de 8 de novembro de 2026.</p>
+  <p class="versao">Versão 0.4, rascunho de 12 de novembro de 2026.</p>
 </article>
 </main>
 
@@ -95,7 +96,7 @@
       </a>
       <p>OXYGENIO AUTOMACAO INOVA SIMPLES (I.S.) · CNPJ <span class="numero">69.039.125/0001-21</span></p>
       <p>Cianorte, Paraná</p>
-      <p>Encarregado de dados: Welerson Fábio Brambila, welersonbrambila.fb@gmail.com <span class="a-confirmar">e-mail a confirmar</span></p>
+      <p>Encarregado de dados: Welerson Fábio Brambila, e-mail @oxygenioautomacao.com.br <span class="a-confirmar">e-mail a confirmar</span></p>
     </div>
     <div>
       <ul class="rodape__links">

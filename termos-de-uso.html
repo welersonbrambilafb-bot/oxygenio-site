@@ -52,14 +52,15 @@
     <div><dt>Prestador</dt><dd>O cliente do escritório em nome de quem a nota é emitida. É dele o login do Portal Nacional guardado no emissor.</dd></div>
     <div><dt>Tomador</dt><dd>Quem recebe o serviço descrito na nota.</dd></div>
     <div><dt>Portal Nacional</dt><dd>O Emissor Nacional da NFS-e, do governo federal, onde a nota é de fato emitida. Não é da Oxygênio.</dd></div>
-    <div><dt>Senha-mestra</dt><dd>A senha que só o escritório conhece e que protege os logins dos portais guardados no emissor.</dd></div>
+    <div><dt>Senha-mestra</dt><dd>A senha que o escritório cria e digita para abrir o cofre dos logins dos portais guardados no emissor. A Oxygênio não a guarda.</dd></div>
   </dl>
 
   <h2 id="o-servico">3. O que o serviço faz</h2>
   <ul>
     <li>Guarda o cadastro dos prestadores para quem o escritório emite nota (razão social, CNPJ, regime, opção do Simples e o login do Portal Nacional), dos tomadores e dos serviços de cada um.</li>
     <li>Monta a nota, mostra a conferência (ISS, retenções e líquido) e, depois da sua confirmação, envia a nota ao Portal Nacional em nome do prestador, usando o login dele.</li>
-    <li>Guarda o XML e o PDF das notas emitidas, por empresa e competência, e permite cancelar uma nota pelo próprio sistema, com o motivo.</li>
+    <li>Guarda o histórico das notas emitidas, por empresa e competência, com a situação e a chave de acesso de cada uma. O XML e o PDF você baixa no computador do escritório, com a extensão do emissor no navegador, através do portal, que pede uma verificação sua.</li>
+    <li>Permite cancelar uma nota pelo sistema, informando o motivo; a solicitação de cancelamento é enviada ao Emissor Nacional.</li>
     <li>Permite copiar uma nota do histórico para montar a próxima, com os dados já preenchidos para você conferir.</li>
   </ul>
 
@@ -67,6 +68,7 @@
   <p>Para não haver mal-entendido sobre o alcance do emissor:</p>
   <ul>
     <li>Não emite nota por conta própria, não agenda e não reenvia notas sozinho. Cada nota sai depois que uma pessoa do escritório confere e confirma.</li>
+    <li>Não envia a nota ao tomador nem ao cliente: o envio é do escritório.</li>
     <li>Não decide regra fiscal: alíquota, retenção, local de incidência, regime e código de serviço são escolhas do contador responsável. A conferência mostra o cálculo com o que você cadastrou.</li>
     <li>Não substitui o contador nem presta serviço contábil. É uma ferramenta do escritório.</li>
     <li>Não atende empresas que só acessam o Portal Nacional com certificado digital.</li>
@@ -76,14 +78,14 @@
   <h2 id="a-conta">5. Quem pode usar, e a conta</h2>
   <ul>
     <li>O emissor é para uso profissional, por escritório de contabilidade (pessoa jurídica) ou contador responsável, maiores de 18 anos, com dados verdadeiros e atualizados.</li>
-    <li>O acesso pede senha e um segundo código, do aplicativo autenticador no celular. Você responde pelo que é feito com a sua conta; guarde a senha e não a compartilhe.</li>
-    <li>O mesmo login pode ser usado em mais de um computador do escritório. O sistema não permite que a mesma empresa emita duas notas ao mesmo tempo.</li>
-    <li>A senha-mestra é só sua. A Oxygênio não a conhece e não consegue recuperá-la: se ela se perder, os logins dos portais precisam ser cadastrados de novo.</li>
+    <li>Cada pessoa da equipe tem o próprio acesso, com senha e um segundo código, do aplicativo autenticador no celular dela, e pode usar o emissor em mais de um computador do escritório. Você responde pelo que é feito com a conta do escritório; cada pessoa guarda a própria senha e não a compartilha.</li>
+    <li>O sistema não permite que a mesma empresa emita duas notas ao mesmo tempo.</li>
+    <li>A senha-mestra é do escritório. A Oxygênio não a guarda e não consegue recuperá-la: se ela se perder, os logins dos portais precisam ser cadastrados de novo.</li>
     <li>A Oxygênio nunca pede a sua senha, a senha-mestra ou o código do celular por WhatsApp, e-mail ou telefone. Mensagem que pede isso não é nossa.</li>
   </ul>
 
   <h2 id="planos">6. Planos</h2>
-  <p>O plano Inicial, sem mensalidade, atende 1 empresa e até 5 notas por mês, para você conhecer o serviço. O plano Escritório atende todos os prestadores que o escritório emite <span class="a-confirmar">limites a confirmar</span>, com o preço combinado diretamente com a equipe. Mudanças de plano, de preço e de limite são avisadas antes de valer.</p>
+  <p>O plano Inicial, sem mensalidade, atende 1 empresa e até 5 notas por mês, para você conhecer o serviço. O plano Empresarial atende 1 empresa e até 100 notas por mês. O plano Escritório atende várias empresas. O preço dos planos Empresarial e Escritório é combinado diretamente com a equipe, e os dois têm uma condição especial nos três primeiros meses. Mudanças de plano, de preço e de limite são avisadas antes de valer.</p>
 
   <h2 id="suas-responsabilidades">7. O que é de sua responsabilidade</h2>
   <ul>
@@ -97,7 +99,7 @@
   <h2 id="nossas-responsabilidades">8. O que é de nossa responsabilidade, e os limites</h2>
   <ul>
     <li>Manter o emissor funcionando e avisar com antecedência as manutenções programadas.</li>
-    <li>Guardar os logins dos portais cifrados, protegidos pela sua senha-mestra, e não acessar o Portal Nacional em nome de um prestador seu sem um comando feito na sua conta.</li>
+    <li>Guardar os logins dos portais cifrados, abertos só dentro do servidor depois que o escritório digita a senha-mestra, e não acessar o Portal Nacional em nome de um prestador seu sem um comando feito na sua conta.</li>
     <li>Tratar os dados conforme a <a href="privacidade.html">Política de privacidade</a>.</li>
   </ul>
   <p>O emissor depende do Portal Nacional, que não é nosso: quando o portal está fora do ar, muda de regra ou recusa uma nota, o emissor avisa, mas não consegue contornar. A Oxygênio não responde por nota emitida com dado que você cadastrou ou confirmou errado, por decisão fiscal tomada pelo escritório, por indisponibilidade do Portal Nacional ou do provedor de hospedagem, nem por perda que o escritório poderia ter evitado conferindo a nota. Em qualquer caso, a responsabilidade da Oxygênio fica limitada ao que o escritório pagou pelo serviço nos 12 meses anteriores ao fato <span class="a-confirmar">limite de responsabilidade a confirmar</span>.</p>
@@ -107,9 +109,9 @@
 
   <h2 id="validade">10. Validade fiscal: o que vale é o XML</h2>
   <ul>
-    <li>O documento fiscal válido é o XML da NFS-e emitido e assinado pelo Portal Nacional. O PDF que o emissor guarda é a representação visual dele, para leitura, impressão e envio ao cliente.</li>
+    <li>O documento fiscal válido é o XML da NFS-e emitido e assinado pelo Portal Nacional. O PDF baixado pelo emissor é a representação visual dele, para leitura, impressão e envio ao cliente.</li>
     <li>Se o PDF e o XML diferirem, vale o XML. Na dúvida, confira a nota no próprio Portal Nacional.</li>
-    <li>A guarda do XML pelos prazos da legislação tributária (em geral, no mínimo 5 anos) é do prestador e do escritório. O emissor guarda uma cópia enquanto a conta existir (item 13), e você pode baixá-la quando quiser.</li>
+    <li>A guarda do XML pelos prazos da legislação tributária (em geral, no mínimo 5 anos) é do prestador e do escritório. O emissor não guarda o XML nem o PDF: você os baixa para o computador do escritório. No emissor fica o histórico de cada nota, com a chave de acesso, para consultá-la no Portal Nacional.</li>
   </ul>
 
   <h2 id="dados">11. Dados pessoais</h2>
@@ -123,9 +125,9 @@
 
   <h2 id="encerramento">13. Suspensão e encerramento</h2>
   <ul>
-    <li>Você pode encerrar a conta quando quiser, pelo contato da equipe. Antes, baixe os XML e PDF que precisar: eles estão no histórico de cada empresa.</li>
-    <li>A Oxygênio pode suspender a conta em caso de uso indevido (item 7), de inadimplência no plano Escritório ou por exigência legal, avisando o motivo.</li>
-    <li>Depois do encerramento, os arquivos ficam disponíveis para download por 90 dias e, passado esse prazo, os dados são apagados <span class="a-confirmar">prazo de guarda a confirmar</span>, salvo o que a lei obrigue a guardar.</li>
+    <li>Você pode encerrar a conta quando quiser, pelo contato da equipe. Antes, confira se já baixou os XML e PDF que precisar: o emissor não guarda os arquivos, e o histórico de cada empresa mostra o que já foi baixado.</li>
+    <li>A Oxygênio pode suspender a conta em caso de uso indevido (item 7), de inadimplência nos planos Empresarial ou Escritório ou por exigência legal, avisando o motivo.</li>
+    <li>Depois do encerramento, os dados da conta são apagados em até 90 dias <span class="a-confirmar">apagamento a confirmar</span>, e as cópias de segurança somem no prazo delas, até 90 dias depois, salvo o que a lei obrigue a guardar.</li>
   </ul>
 
   <h2 id="alteracoes">14. Alterações destes termos</h2>
@@ -135,9 +137,9 @@
   <p>Estes termos seguem a lei brasileira: o Código Civil (Lei 10.406/2002), o Marco Civil da Internet (Lei 12.965/2014), a LGPD (Lei 13.709/2018) e, no que couber, o Código de Defesa do Consumidor (Lei 8.078/1990). Para resolver qualquer questão, fica escolhido o foro da Comarca de Cianorte, Paraná <span class="a-confirmar">foro a confirmar</span>, ressalvado o foro do domicílio do consumidor quando a lei assim determinar.</p>
 
   <h2 id="contato">16. Contato</h2>
-  <p>Dúvidas sobre estes termos: WhatsApp da equipe, <span class="numero">(44) 99116-0421</span>, ou o e-mail welersonbrambila.fb@gmail.com <span class="a-confirmar">e-mail a confirmar</span>.</p>
+  <p>Dúvidas sobre estes termos: WhatsApp da equipe, <span class="numero">(44) 99116-0421</span>, ou o e-mail @oxygenioautomacao.com.br <span class="a-confirmar">e-mail a confirmar</span>.</p>
 
-  <p class="versao">Versão 0.3, rascunho de 8 de novembro de 2026.</p>
+  <p class="versao">Versão 0.4, rascunho de 12 de novembro de 2026.</p>
 </article>
 </main>
 
@@ -150,7 +152,7 @@
       </a>
       <p>OXYGENIO AUTOMACAO INOVA SIMPLES (I.S.) · CNPJ <span class="numero">69.039.125/0001-21</span></p>
       <p>Cianorte, Paraná</p>
-      <p>Encarregado de dados: Welerson Fábio Brambila, welersonbrambila.fb@gmail.com <span class="a-confirmar">e-mail a confirmar</span></p>
+      <p>Encarregado de dados: Welerson Fábio Brambila, e-mail @oxygenioautomacao.com.br <span class="a-confirmar">e-mail a confirmar</span></p>
     </div>
     <div>
       <ul class="rodape__links">

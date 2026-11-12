@@ -87,15 +87,17 @@ o captcha, e-mail, endereço, razão social por extenso nos textos legais (até 
 
 Cada item está marcado na página com `class="a-confirmar"` e repetido em `A_CONFIRMAR` no teste.
 
-- Em toda página, no rodapé: o e-mail do encarregado de dados, preenchido com o que o dono já publica no DANFSe.tools;
-  ele confirma se quer esse mesmo no site. O endereço está decidido (08/11/2026): só "Cianorte, Paraná", sem rua nem CEP,
-  no rodapé e nas páginas legais.
+- Em toda página, no rodapé: o e-mail do encarregado de dados. Decidido (12/11/2026): um endereço no domínio da empresa,
+  ainda a criar; até lá o site mostra só "@oxygenioautomacao.com.br". O endereço da empresa está decidido (08/11/2026):
+  só "Cianorte, Paraná", sem rua nem CEP, no rodapé e nas páginas legais.
 - `emissao-nacional.html`: tempos ("uma manhã" vira "alguns minutos"), a lista do que o Build faz, os limites do plano
   Escritório, o prazo do código de teste (30 dias).
 - `build.html`: a lista do que ele faz e quais prefeituras atende (dizer ou não a cidade é decisão do dono).
-- As páginas legais (versão 0.2, 08/11/2026, escritas com as referências que o dono deixou em `Referencias/`, pasta
-  fora do git): razão social e CNPJ (já conferidos no cartão, o dono confirma o uso), o encarregado, os prazos propostos
-  (90 dias de guarda depois do encerramento, 6 meses dos registros de acesso, 30 dias de aviso, 15 dias de resposta),
+- As páginas legais (versão 0.4, 12/11/2026, corrigidas pela rodada de 11/11 com o que os apps fazem: o servidor não
+  guarda o XML nem o PDF, as senhas se abrem dentro do servidor, a cópia diária vai cifrada ao Backblaze B2): razão
+  social e CNPJ (já conferidos no cartão, o dono confirma o uso), o encarregado, o apagamento quando a conta termina (o
+  emissor ainda não tem o procedimento), os prazos propostos (6 meses dos registros de acesso, 30 dias de aviso, 15 dias
+  de resposta),
   o limite de responsabilidade (o que foi pago em 12 meses), o foro (Comarca de Cianorte), o local do servidor (para
   a transferência internacional), os papéis de controlador e operador, e a revisão de um advogado.
 

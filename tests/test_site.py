@@ -29,7 +29,7 @@ CONTRATAR = 'Contratar<span class="tudo-oculto"> (abre o WhatsApp)</span>'
 INDEPENDENCIA = "sem vínculo com a Receita Federal, com prefeituras nem com o Portal Nacional"
 # O que falta para publicar, por página (LEIA-ME.md). Decidiu um, tire daqui e da página.
 # A faixa de prévia e o rodapé, em toda página. Endereço: só "Cianorte, Paraná" (decisão do dono, 08/11/2026). O e-mail
-# do encarregado vem do que o dono já publica, mas fica marcado até ele confirmar que quer esse no site.
+# do encarregado fica num endereço do domínio da empresa, ainda a criar (decisão do dono, 12/11/2026): marcado até existir.
 RODAPE_A_CONFIRMAR = {"a confirmar", "e-mail a confirmar"}
 LEGAL_A_CONFIRMAR = {"revisão de advogado a confirmar", "razão social a confirmar"}
 A_CONFIRMAR: dict[str, set[str]] = {
@@ -38,12 +38,12 @@ A_CONFIRMAR: dict[str, set[str]] = {
                                                    "prazo a confirmar"},
     "build.html": RODAPE_A_CONFIRMAR | {"lista a conferir", "prefeituras atendidas a confirmar"},
     "termos-de-uso.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
-        "CNPJ a confirmar", "limites a confirmar", "limite de responsabilidade a confirmar",
-        "prazo de guarda a confirmar", "prazo de aviso a confirmar", "foro a confirmar"},
+        "CNPJ a confirmar", "limite de responsabilidade a confirmar", "apagamento a confirmar",
+        "prazo de aviso a confirmar", "foro a confirmar"},
     "privacidade.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
-        "CNPJ a confirmar", "papéis a confirmar com advogado", "local do servidor a confirmar",
+        "CNPJ a confirmar", "papéis a confirmar com advogado", "local do servidor a confirmar", "apagamento a confirmar",
         "prazo de guarda a confirmar", "prazo de resposta a confirmar", "encarregado a confirmar"},
-    "lgpd.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {"papéis a confirmar com advogado",
+    "lgpd.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {"papéis a confirmar com advogado", "apagamento a confirmar",
                                                           "prazo de resposta a confirmar", "encarregado a confirmar"},
 }
 BLOCO_ROOT = re.compile(r"^:root \{.*?^\}\n", re.DOTALL | re.MULTILINE)
@@ -604,7 +604,7 @@ def test_a_cena_espera_o_meio_da_tela_e_a_versao_suave_nao_desloca_nada(endereco
 # Rodada de 11/11/2026 (docs/decisoes-site-2026-11-11.md): o servidor do emissor abre as senhas dos portais para emitir,
 # o Build não tem cofre nem senha-mestra, o bloqueio por tentativas freia a entrada sem trancar a conta, e o Build manda o
 # CNPJ a serviços públicos de consulta quando a pessoa pede. O site diz isso, e não o contrário.
-@pytest.mark.parametrize("nome", COMERCIAIS)
+@pytest.mark.parametrize("nome", PAGINAS)
 def test_sem_promessa_de_conhecimento_zero(nome: str) -> None:
     texto = _texto(HTML[nome])
     for frase in ("não consegue lê-las", "não a conhece", "não lemos as senhas", "só o escritório tem a senha-mestra",
@@ -619,7 +619,7 @@ def test_senha_mestra_so_no_emissor() -> None:
     assert itens and all("emissor" in item for item in itens if "senha-mestra" in item), itens
 
 
-@pytest.mark.parametrize("nome", COMERCIAIS)
+@pytest.mark.parametrize("nome", PAGINAS)
 def test_sem_conta_bloqueia(nome: str) -> None:
     assert "a conta bloqueia" not in _texto(HTML[nome])
 
@@ -643,4 +643,41 @@ def test_aviso_contra_golpe() -> None:
     assert "nunca pede" in aviso.group() and "senha-mestra" in aviso.group() and "código do celular" in aviso.group()
     secao = re.search(r'<section id="seguranca".*?</section>', pagina, re.DOTALL)
     assert secao and aviso.group() in secao.group()
+
+
+# ------------------------------------------------------------------ L2 (12/11/2026): os textos legais na versão 0.4
+# O servidor do emissor não guarda o XML nem o PDF (o download é pelo computador do escritório), só as senhas e a cópia
+# de segurança são cifradas pelo app, a cópia diária vai ao Backblaze B2, e o aceite guarda versão, hora, origem e
+# navegador. Os textos legais dizem isso.
+@pytest.mark.parametrize("nome", LEGAIS)
+def test_legais_sem_guarda_de_arquivo(nome: str) -> None:
+    texto = _texto(HTML[nome])
+    for frase in ("guarda o xml e o pdf", "guarda uma cópia", "disponíveis para download por 90 dias",
+                  "os dados continuam cifrados", "cada ação no sistema (entrar, emitir, cancelar)",
+                  "o pdf que o emissor guarda", "eles estão no histórico"):
+        assert frase not in texto, (nome, frase)
+    assert '<p class="versao">Versão 0.3,' not in HTML[nome]
+
+
+def test_politica_cita_a_copia_de_seguranca() -> None:
+    pagina = HTML["privacidade.html"]
+    assert "Backblaze B2" in pagina and "cifrada" in pagina
+    for nome in LEGAIS:  # apagar quando a conta termina ainda não tem procedimento no app: fica marcado
+        for apagamos in re.finditer(r"[Aa]pagamos os dados[^<]*", HTML[nome]):
+            resto = HTML[nome][apagamos.end():apagamos.end() + 300]
+            assert '<span class="a-confirmar">apagamento a confirmar</span>' in resto, nome
+
+
+def test_politica_diz_o_que_o_aceite_guarda() -> None:
+    secao = re.search(r"<h3>Registros técnicos</h3>.*?</ul>", HTML["privacidade.html"], re.DOTALL)
+    assert secao and "navegador" in secao.group() and "versão aceita" in secao.group()
+
+
+@pytest.mark.parametrize("nome", PAGINAS)
+def test_email_do_encarregado_no_dominio_da_empresa(nome: str) -> None:
+    """O e-mail pessoal saiu do site (decisão do dono, 12/11/2026); fica o domínio da empresa até o endereço existir."""
+    pagina = HTML[nome]
+    assert "gmail" not in pagina.casefold()
+    rodape = pagina[pagina.index("<footer"):]
+    assert "e-mail @oxygenioautomacao.com.br" in rodape
 
