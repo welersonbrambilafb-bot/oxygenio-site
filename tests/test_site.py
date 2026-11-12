@@ -300,7 +300,9 @@ def test_o_que_falta_decidir_fica_a_vista_e_a_pagina_nao_se_indexa(nome: str) ->
 PROIBIDOS = [
     # o que não foi decidido ou não é verdade
     "com certeza", "LGPD", "ponta a ponta", "garant", "100%", "R$", "depoimento", "gratuito", "grátis",
-    "o escritório deixa de conferir", "melhor do mercado", "captcha", "Ohio",
+    # o nome da verificação do portal e a região do servidor, montados em pedaços: o dono decidiu que nem os arquivos
+    # publicados no GitHub os mostram (12/11/2026)
+    "o escritório deixa de conferir", "melhor do mercado", "cap" + "tcha", "Oh" + "io",
     # o tom de anúncio e de texto gerado (briefing de 03/11/2026)
     "revolucion", "potencializ", "transforme", "descubra", "solução completa", "de ponta", "no mundo atual",
     "sem complicação", "em apenas alguns cliques", "mais do que", "não é apenas", "inteligente", "algoritmo", "robô",
@@ -401,7 +403,7 @@ def test_sem_rolagem_lateral_sem_cookie_e_com_os_botoes_a_vista(endereco: str, n
             for seletor in (".destaque h1 > span:last-child", ".destaque__frase", ".destaque__acoes"):
                 assert pagina.evaluate(f"getComputedStyle(document.querySelector('{seletor}')).opacity") == "1", seletor
         cabecalho = pagina.locator(".cabecalho__acoes")
-        for texto in ("Entrar", "Contratar"):
+        for texto in (("Contratar",) if nome == "build.html" else ("Entrar", "Contratar")):  # o DMS não tem Entrar
             caixa = cabecalho.get_by_role("link", name=texto).bounding_box()
             assert caixa and caixa["x"] >= 0 and caixa["x"] + caixa["width"] <= largura and caixa["y"] < 150
         if nome == "index.html":  # as pistas vêm depois do Contratar no celular e ao lado no computador; tudo aceso ao fim
@@ -415,8 +417,8 @@ def test_sem_rolagem_lateral_sem_cookie_e_com_os_botoes_a_vista(endereco: str, n
             pagina.wait_for_timeout(2500)
             assert pagina.evaluate("[...document.querySelectorAll('.pista__passos li, .pista__selo')].every(e => getComputedStyle(e).opacity === '1')")
         marca = pagina.locator(".cabecalho .marca").bounding_box()
-        entrar = cabecalho.get_by_role("link", name="Entrar").bounding_box()
-        assert marca and entrar and marca["x"] + marca["width"] + 8 <= entrar["x"], "a marca encosta no Entrar (U-02)"
+        entrar = cabecalho.locator("a").first.bounding_box()  # o Entrar; na página do DMS, que não o tem, o Contratar
+        assert marca and entrar and marca["x"] + marca["width"] + 8 <= entrar["x"], "a marca encosta no botão (U-02)"
         links = pagina.locator(".cabecalho__menu a").all()  # as três páginas à vista em toda largura, com 44 px de toque (U-01, U-06)
         assert len(links) == 3
         fim_do_cabecalho = pagina.locator(".cabecalho").bounding_box()["y"] + pagina.locator(".cabecalho").bounding_box()["height"]
@@ -563,6 +565,13 @@ def test_nada_do_emissor_no_repositorio() -> None:
             assert palavra not in texto, (caminho, palavra)
     for pasta in ("docs", "Referencias"):
         assert not any(c.startswith(pasta + "/") for c in versionados), pasta
+    for caminho in filter(None, versionados):  # e as duas palavras que o dono escondeu do GitHub (12/11/2026)
+        arquivo = RAIZ / caminho
+        if arquivo.suffix in {".woff2", ".woff", ".png", ".jpg", ".ico"}:
+            continue
+        texto = arquivo.read_text(encoding="utf-8").casefold()
+        for palavra in ("cap" + "tcha", "oh" + "io"):
+            assert palavra not in texto, (caminho, palavra)
 
 
 @pytest.mark.navegador
@@ -768,4 +777,142 @@ def test_dms_sem_mes_anterior_e_com_licenca_por_computador() -> None:
     assert emissor and 'href="emissao-nacional.html"' in emissor.group()
     for nome in PAGINAS:  # o nome antigo saiu do site
         assert "Build" not in HTML[nome][HTML[nome].index("<body"):], nome
+
+
+# ------------------------------------------------------------------ L6 a L12 (12/11/2026)
+def test_movimento_texto_nunca_espera_e_links_de_pergunta() -> None:
+    """L6: nenhuma regra esconde os fatos à espera da cena. L7: o link de uma pergunta rola até ela, e abrir uma pergunta
+    põe o endereço dela na barra. L11: o valor da maquete não quebra no meio."""
+    for regra in re.findall(r"[^}]*:not\(\.em-foco\)[^{]*\.fatos li[^{]*\{[^}]*\}", FOLHA):
+        assert "opacity: 0" not in regra, regra
+    assert "scrollIntoView" in SCRIPT and "replaceState" in SCRIPT and ".maquete--emissor" in SCRIPT
+    assert re.search(r"\.maquete__valor \{[^}]*white-space: nowrap", FOLHA)
+    assert re.search(r"@media \(max-height: 32rem\) \{\s*\.cabecalho \{ position: static; \}", FOLHA)
+
+
+@pytest.mark.parametrize("nome", PAGINAS)
+def test_faixa_de_previa_curta(nome: str) -> None:
+    faixa = re.search(r'<p class="previa">(.*?)</p>', HTML[nome], re.DOTALL)
+    assert faixa
+    texto = re.sub(r"<[^>]+>", "", faixa.group(1))
+    assert len(texto) <= 70 and "ainda não é pública" in texto, texto
+
+
+def test_siglas_explicadas_e_nfse_no_alto_da_inicial() -> None:
+    inicial = HTML["index.html"]
+    destaque = inicial[inicial.index('<section class="destaque"'):inicial.index("</section>")]
+    assert "NFS-e" in destaque and "declaração mensal" in destaque
+    build = HTML["build.html"]
+    assert "declaração mensal" in build and "certidão negativa" in build
+    assert "Nomenclatura Brasileira de Serviços" in HTML["emissao-nacional.html"]
+
+
+def test_readme_tem_verificacao_do_dominio() -> None:
+    readme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "Verificar o domínio" in readme and "TXT" in readme and "_github-pages-challenge" in readme
+
+
+def _abrir(p: object, largura: int, altura: int, reduzido: bool = False, escala: float = 1) -> tuple[object, object]:
+    nav = p.chromium.launch(channel=_canal(), headless=True)
+    contexto = nav.new_context(viewport={"width": largura, "height": altura}, device_scale_factor=escala,
+                               reduced_motion="reduce" if reduzido else "no-preference")
+    return nav, contexto.new_page()
+
+
+@pytest.mark.navegador
+def test_fatos_nunca_em_branco(endereco: str) -> None:
+    """L6: com o bloco no terço de baixo da tela, o texto dos fatos já está à vista, nas duas versões; perto do meio da
+    tela, a borda de cada fato acende na cor da marca."""
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        for largura, altura in ((1440, 800), (360, 740)):
+            for reduzido in (False, True):
+                nav, pagina = _abrir(p, largura, altura, reduzido)
+                pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+                pagina.evaluate("window.scrollBy({top: document.querySelector('.seguranca').getBoundingClientRect().top - innerHeight * .72, behavior: 'instant'})")
+                pagina.wait_for_timeout(1500)
+                classes = pagina.locator(".seguranca").get_attribute("class")
+                assert "visivel" in classes and "em-foco" not in classes, (largura, reduzido, classes)
+                assert pagina.evaluate("getComputedStyle(document.querySelector('.seguranca')).opacity") == "1"
+                assert pagina.evaluate("[...document.querySelectorAll('.fatos li')].every(e => getComputedStyle(e).opacity === '1')")
+                marca = pagina.evaluate("getComputedStyle(document.querySelector('.cadeado')).color")
+                assert pagina.evaluate("getComputedStyle(document.querySelector('.fatos li')).borderLeftColor") != marca
+                pagina.evaluate("window.scrollBy({top: document.querySelector('.seguranca').getBoundingClientRect().top - innerHeight * .3, behavior: 'instant'})")
+                pagina.wait_for_timeout(3500)
+                bordas = pagina.evaluate("[...document.querySelectorAll('.fatos li')].map(e => getComputedStyle(e).borderLeftColor)")
+                assert all(b == marca for b in bordas), (largura, reduzido, bordas, marca)
+                nav.close()
+
+
+@pytest.mark.navegador
+def test_a_cena_do_destaque_espera_o_foco_no_celular(endereco: str) -> None:
+    from playwright.sync_api import sync_playwright
+
+    emitida = "getComputedStyle(document.querySelector('.maquete--emissor .maquete__emitida')).opacity"
+    with sync_playwright() as p:
+        nav, pagina = _abrir(p, 390, 844)
+        pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+        pagina.wait_for_timeout(2000)
+        assert "em-foco" not in pagina.locator(".maquete--emissor").get_attribute("class")
+        assert pagina.evaluate("getComputedStyle(document.querySelector('.maquete__nota--anterior')).opacity") == "1"
+        assert pagina.evaluate(emitida) == "0"
+        pagina.evaluate("window.scrollBy({top: document.querySelector('.maquete--emissor').getBoundingClientRect().top - innerHeight * .4, behavior: 'instant'})")
+        pagina.wait_for_timeout(5500)
+        assert pagina.evaluate(emitida) == "1"
+        nav.close()
+        nav, pagina = _abrir(p, 1440, 800)
+        pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+        pagina.wait_for_timeout(5500)
+        assert pagina.evaluate(emitida) == "1"
+        nav.close()
+
+
+@pytest.mark.navegador
+def test_cabecalho_em_tela_baixa_e_link_da_pergunta(endereco: str) -> None:
+    """L7: com zoom de 200% (683 x 384), o cabeçalho rola junto; numa tela normal continua preso. O link de uma pergunta
+    mostra a pergunta abaixo do cabeçalho, e abrir uma pergunta põe o endereço dela na barra. L9: a 360 px, o Contratar
+    do destaque fica na primeira tela."""
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        nav, pagina = _abrir(p, 683, 384, escala=2)
+        pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+        assert pagina.evaluate("getComputedStyle(document.querySelector('.cabecalho')).position") == "static"
+        nav.close()
+        nav, pagina = _abrir(p, 1366, 768)
+        pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+        assert pagina.evaluate("getComputedStyle(document.querySelector('.cabecalho')).position") == "sticky"
+        nav.close()
+        nav, pagina = _abrir(p, 360, 740)
+        pagina.goto(f"{endereco}/emissao-nacional.html#p3", wait_until="networkidle")
+        pagina.wait_for_timeout(1200)
+        assert pagina.locator("#p3-botao").get_attribute("aria-expanded") == "true"
+        topo = pagina.evaluate("document.querySelector('#p3-botao').getBoundingClientRect().top")
+        fim_do_cabecalho = pagina.evaluate("document.querySelector('.cabecalho').getBoundingClientRect().bottom")
+        assert topo >= fim_do_cabecalho - 1 and topo < 740, (topo, fim_do_cabecalho)
+        pagina.locator("#p2-botao").click()
+        assert pagina.evaluate("location.hash") == "#p2"
+        pagina.goto(f"{endereco}/emissao-nacional.html", wait_until="networkidle")
+        contratar = pagina.locator(".destaque .botao").bounding_box()
+        assert contratar and contratar["y"] + contratar["height"] <= 740, contratar
+        nav.close()
+
+
+@pytest.mark.navegador
+def test_letras_das_maquetes_legiveis_no_celular(endereco: str) -> None:
+    """L11: a 360 px, nenhuma letra das maquetes, das pistas e das mini telas abaixo de 12 px."""
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        nav, pagina = _abrir(p, 360, 740, reduzido=True)
+        for nome in COMERCIAIS:
+            pagina.goto(f"{endereco}/{nome}", wait_until="networkidle")
+            pequenas = pagina.evaluate("""() => [...document.querySelectorAll('.maquete *, .pistas *, .mini *, .conferencia__figura *')]
+              .filter(e => [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))
+              .filter(e => parseFloat(getComputedStyle(e).fontSize) < 12)
+              .map(e => (e.className || e.tagName) + ' ' + getComputedStyle(e).fontSize)""")
+            assert not pequenas, (nome, pequenas)
+            assert pagina.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth") == 0
+        nav.close()
 

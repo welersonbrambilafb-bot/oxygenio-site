@@ -33,7 +33,7 @@ Salve sempre em **UTF-8 sem BOM**, com editor de texto (VS Code, Notepad++, Bloc
 ## O que o teste exige (e por quê)
 
 - **Palavras que não entram nas páginas comerciais** (`index.html`, `emissao-nacional.html`, `build.html`), por decisão
-  do dono: `captcha`, `Ohio`, `R$`, `grátis`, `gratuito`, `LGPD`, `depoimento`, `garant`, `100%`, `com certeza`,
+  do dono: o nome da verificação do portal, a região do servidor, `R$`, `grátis`, `gratuito`, `LGPD`, `depoimento`, `garant`, `100%`, `com certeza`,
   `ponta a ponta`, `melhor do mercado`, e o tom de anúncio: `revolucion`, `potencializ`, `transforme`, `descubra`,
   `solução completa`, `de ponta`, `no mundo atual`, `sem complicação`, `em apenas alguns cliques`, `mais do que`,
   `não é apenas`, `inteligente`, `algoritmo`, `robô`, `milhares`, `o melhor`, `o mais rápido`, e o ponto de exclamação.
@@ -84,8 +84,8 @@ reescreva. Nos textos legais, linguagem de escritório, direta, sem juridiquês 
 
 Sem preço escrito (o preço é combinado com a equipe; a condição especial dos três primeiros meses dos planos
 Empresarial e Escritório é apresentada no WhatsApp), três planos no Emissor (Inicial: 1 empresa e até 5 notas por
-mês; Empresarial: 1 empresa e até 100 notas por mês; Escritório: várias empresas), sem captcha (o download diz "o
-portal pede uma verificação"), sem prova social (depoimento, número
+mês; Empresarial: 1 empresa e até 100 notas por mês; Escritório: várias empresas), sem o nome da verificação do portal (o
+download diz "o portal pede uma verificação"), sem prova social (depoimento, número
 de clientes, logos de clientes), sem modo escuro, WhatsApp como único contato, o O² como marca principal, "servidor da
 Amazon" sem dizer onde, cookies sem banner (uma linha no rodapé: o site não usa nenhum), e a faixa de prévia até zerar
 a lista abaixo.
@@ -93,7 +93,7 @@ a lista abaixo.
 ## O que não dizer sem o dono decidir
 
 Preço, cidade ou quantidade de empresas do Oxygênio DMS, onde o servidor fica (só "servidor da Amazon"),
-o captcha, e-mail, endereço, razão social por extenso nos textos legais (até ele confirmar), prazos de guarda de dados.
+o nome da verificação do portal, e-mail, endereço, razão social por extenso nos textos legais (até ele confirmar), prazos de guarda de dados.
 
 ## O que falta decidir (a lista que segura a prévia)
 

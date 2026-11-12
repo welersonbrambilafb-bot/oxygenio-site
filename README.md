@@ -121,7 +121,18 @@ espalhar a mudança.
 4. Abra `https://www.oxygenioautomacao.com.br/` e `https://oxygenioautomacao.com.br/` (a raiz redireciona para o
    `www`). Confira as seis páginas e os botões Entrar e Contratar.
 
-### 6. Depois de publicado
+### 6. Verificar o domínio na conta do GitHub
+
+Feito em 09/11/2026. Impede que outra conta do GitHub publique um site no domínio da Oxygênio se o Pages um dia for
+desligado com o DNS ainda apontando para lá.
+
+1. No GitHub, na foto do canto superior direito, **Settings** (da conta, não do repositório) → **Pages** →
+   **Add a domain**. Digite `oxygenioautomacao.com.br`, sem o `www`.
+2. O GitHub mostra um registro TXT, com o nome `_github-pages-challenge-<usuário>` e um código. Crie esse registro
+   no Registro.br, na mesma zona do passo 4.
+3. Depois que o Registro.br publicar a zona (alguns minutos), volte e clique em **Verify**. Não apague o TXT.
+
+### 7. Depois de publicado
 
 - Cada mudança no site é um commit e um `git push`; o GitHub republica em um ou dois minutos.
 - Enquanto a lista do `LEIA-ME.md` ("o que falta decidir") não zerar, as páginas ficam com a faixa de prévia e com

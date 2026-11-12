@@ -28,13 +28,15 @@
       entradas.forEach(function (entrada) {
         if (entrada.isIntersecting) { entrada.target.classList.add("visivel"); observador.unobserve(entrada.target); }
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    }, { rootMargin: "0px 0px -12% 0px" });  // o topo do bloco passou de 88% da tela: aparece, mesmo num bloco alto
     aparecem.forEach(function (elemento) { if (!elemento.classList.contains("visivel")) { observador.observe(elemento); } });
   }
 
   // 1b. As cenas (o cadeado, a placa de parada, os ícones, os checks da conferência, os fatos) esperam o bloco passar da
   //     linha de 65% da altura da tela, perto de onde o olho está; antes, o bloco já apareceu, mas a cena não começou.
   //     No fim da página, o que está na tela entra em foco de uma vez (um bloco baixo nunca passa da linha).
+  // A maquete do destaque do emissor também espera o foco (L6): no celular ela fica abaixo da dobra.
+  var focaveis = aparecem.concat(Array.prototype.slice.call(document.querySelectorAll(".maquete--emissor")));
   if (temObservador && !semMovimento) {
     var focar = function (entradas, obs) {
       entradas.forEach(function (entrada) {
@@ -42,17 +44,17 @@
       });
     };
     var meioDaTela = new IntersectionObserver(focar, { rootMargin: "0px 0px -35% 0px" });
-    aparecem.forEach(function (elemento) { meioDaTela.observe(elemento); });
+    focaveis.forEach(function (elemento) { meioDaTela.observe(elemento); });
     var noFim = function () {
       if (window.innerHeight + window.scrollY < html.scrollHeight - 4) { return; }
-      aparecem.forEach(function (elemento) {
+      focaveis.forEach(function (elemento) {
         if (elemento.getBoundingClientRect().top < window.innerHeight) { elemento.classList.add("em-foco"); }
       });
     };
     window.addEventListener("scroll", noFim, { passive: true });
     noFim();
   } else {
-    aparecem.forEach(function (elemento) { elemento.classList.add("em-foco"); });
+    focaveis.forEach(function (elemento) { elemento.classList.add("em-foco"); });
   }
 
   // 2. Como funciona: o passo no meio da tela acende, e a tela ao lado (em telas largas) troca para a dele.
@@ -75,11 +77,15 @@
   }
 
   // 3. Perguntas frequentes: abre e fecha; a altura e o giro do ícone são do CSS. Um endereço com a resposta (#p3) chega
-  //    com a pergunta já aberta, para quem recebe o link pelo WhatsApp.
+  //    com a pergunta já aberta e à vista, para quem recebe o link pelo WhatsApp; abrir uma pergunta põe o endereço dela
+  //    na barra, para a equipe copiar e mandar.
   Array.prototype.forEach.call(document.querySelectorAll(".pergunta__botao"), function (botao) {
     botao.addEventListener("click", function () {
       var aberta = botao.closest(".pergunta").classList.toggle("aberta");
       botao.setAttribute("aria-expanded", aberta ? "true" : "false");
+      if (window.history && history.replaceState) {  // sem mexer no Voltar: troca o endereço, não empilha
+        history.replaceState(null, "", aberta ? "#" + botao.getAttribute("aria-controls") : location.pathname + location.search);
+      }
     });
   });
   function abrirPeloEndereco() {
@@ -88,9 +94,12 @@
     var pergunta = corpo.closest(".pergunta");
     pergunta.classList.add("aberta");
     pergunta.querySelector(".pergunta__botao").setAttribute("aria-expanded", "true");
+    pergunta.scrollIntoView({ block: "start" });  // a pergunta à vista, abaixo do cabeçalho, e não só a resposta
   }
   abrirPeloEndereco();
   window.addEventListener("hashchange", abrirPeloEndereco);
+  // ao carregar, o navegador ainda rola até a resposta depois deste script; rola de novo até a pergunta, no fim
+  window.addEventListener("load", function () { window.requestAnimationFrame(abrirPeloEndereco); });
 
   // 4. O cabeçalho ganha a linha e a sombra depois que a página rola.
   var cabecalho = document.querySelector(".cabecalho");

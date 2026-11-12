@@ -19,7 +19,7 @@ GitHub: **cada mudança é um commit**, com mensagem em português. Quem edita a
   este arquivo, LEIA-ME, teste). Relatórios de webdesign, documentos de decisão, propostas de texto e referências ficam
   em `docs/` e `Referencias/`, nesta pasta, **fora do git** (decisão do dono, 08/11/2026): o `.gitignore` já os exclui.
   Nunca tire essas pastas do `.gitignore`.
-- **Decisões do dono que valem em todas as páginas:** sem preço, sem captcha, sem prova social (depoimento, número de
+- **Decisões do dono que valem em todas as páginas:** sem preço escrito, sem citar o nome da verificação do portal, sem prova social (depoimento, número de
   clientes), sem modo escuro, WhatsApp como contato, o O² como marca principal, faixa de prévia e `noindex` até zerar
   a lista do que falta decidir (`LEIA-ME.md`).
 - **"Entrar" (em toda página, menos na do Oxygênio DMS) sempre leva a `https://emissor.oxygenioautomacao.com.br/`.** "Contratar" leva ao WhatsApp da equipe,
