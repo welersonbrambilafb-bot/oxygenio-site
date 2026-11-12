@@ -510,6 +510,7 @@ html.js .pergunta.aberta .pergunta__texto { visibility: visible; transition-dela
 .legal h1 { font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem); }
 .legal__resumo { margin-top: 1.25rem; font-size: 1.125rem; color: var(--pagina-texto-suave); }
 .aviso { margin-top: 1.5rem; padding: .9rem 1.25rem; border-left: 4px solid var(--aviso); border-radius: var(--raio); background: var(--aviso-suave); max-width: none; }
+.endereco { overflow-wrap: anywhere; }  /* L1 (12/11/2026): o endereço do emissor por extenso não estoura a tela de 360 px; no HTML, a quebra preferida é depois de "emissor." */
 .legal h2 { margin-top: 2.75rem; margin-bottom: .75rem; font-size: 1.5rem; }
 .legal h3 { margin-top: 1.5rem; margin-bottom: .4rem; font-size: 1.0625rem; }
 .legal p, .legal ul { max-width: none; }

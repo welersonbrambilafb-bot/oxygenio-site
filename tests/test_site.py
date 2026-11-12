@@ -599,3 +599,48 @@ def test_a_cena_espera_o_meio_da_tela_e_a_versao_suave_nao_desloca_nada(endereco
             contexto.close()
         nav.close()
 
+
+# ------------------------------------------------------------------ L1 (12/11/2026): segurança dita como ela é
+# Rodada de 11/11/2026 (docs/decisoes-site-2026-11-11.md): o servidor do emissor abre as senhas dos portais para emitir,
+# o Build não tem cofre nem senha-mestra, o bloqueio por tentativas freia a entrada sem trancar a conta, e o Build manda o
+# CNPJ a serviços públicos de consulta quando a pessoa pede. O site diz isso, e não o contrário.
+@pytest.mark.parametrize("nome", COMERCIAIS)
+def test_sem_promessa_de_conhecimento_zero(nome: str) -> None:
+    texto = _texto(HTML[nome])
+    for frase in ("não consegue lê-las", "não a conhece", "não lemos as senhas", "só o escritório tem a senha-mestra",
+                  "só o escritório conhece"):
+        assert frase not in texto, frase
+
+
+def test_senha_mestra_so_no_emissor() -> None:
+    secao = re.search(r'<section id="como-trabalhamos".*?</section>', HTML["index.html"], re.DOTALL)
+    assert secao
+    itens = [_texto(item) for item in re.findall(r"<li>.*?</li>", secao.group(), re.DOTALL)]
+    assert itens and all("emissor" in item for item in itens if "senha-mestra" in item), itens
+
+
+@pytest.mark.parametrize("nome", COMERCIAIS)
+def test_sem_conta_bloqueia(nome: str) -> None:
+    assert "a conta bloqueia" not in _texto(HTML[nome])
+
+
+def test_build_destinos_dos_dados() -> None:
+    pagina = HTML["build.html"]
+    assert "nada sai para fora" not in _texto(pagina)
+    resposta = re.search(r'<div class="pergunta__corpo" id="p4">.*?</div></div>', pagina, re.DOTALL)
+    assert resposta and "CNPJ" in resposta.group() and "Atualizar razão social" in resposta.group()
+
+
+def test_aviso_contra_golpe() -> None:
+    """O cliente reconhece o emissor verdadeiro pelo endereço, escrito por extenso (não só no link do Entrar), e sabe que
+    a equipe nunca pede senha, senha-mestra nem o código do celular."""
+    pagina = HTML["emissao-nacional.html"]
+    endereco = ENTRAR.split("//")[1].strip("/")
+    aviso = re.search(r'<p class="aviso">.*?</p>', pagina, re.DOTALL)
+    # no celular, a linha quebra depois de "emissor." (o <wbr>), nunca no meio do domínio
+    assert aviso and f'<strong class="endereco">{endereco}</strong>' in aviso.group().replace("<wbr>", "")
+    assert "emissor.<wbr>" in aviso.group()
+    assert "nunca pede" in aviso.group() and "senha-mestra" in aviso.group() and "código do celular" in aviso.group()
+    secao = re.search(r'<section id="seguranca".*?</section>', pagina, re.DOTALL)
+    assert secao and aviso.group() in secao.group()
+
