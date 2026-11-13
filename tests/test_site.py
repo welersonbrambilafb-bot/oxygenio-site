@@ -42,7 +42,7 @@ A_CONFIRMAR: dict[str, set[str]] = {
         "CNPJ a confirmar", "limite de responsabilidade a confirmar", "apagamento a confirmar",
         "prazo de aviso a confirmar", "foro a confirmar"},
     "privacidade.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
-        "CNPJ a confirmar", "papéis a confirmar com advogado", "local do servidor a confirmar", "apagamento a confirmar",
+        "CNPJ a confirmar", "papéis a confirmar com advogado", "base da transferência a confirmar", "apagamento a confirmar",
         "prazo de guarda a confirmar", "prazo de resposta a confirmar", "encarregado a confirmar"},
     "lgpd.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {"papéis a confirmar com advogado", "apagamento a confirmar",
                                                           "prazo de resposta a confirmar", "encarregado a confirmar"},
@@ -746,17 +746,18 @@ def test_antes_de_contratar_o_emissor() -> None:
         assert 'aria-expanded="false"' in botao
 
 
-def test_tres_planos_com_mensagem_pronta() -> None:
-    """Inicial, Empresarial e Escritório (decisão do dono, 12/11/2026), sem preço escrito; cada um leva direto ao WhatsApp
-    com a mensagem do plano; a condição dos três primeiros meses é apresentada pela equipe."""
+def test_planos_com_mensagem_pronta() -> None:
+    """Inicial e Escritório, os dois que o app tem na abertura por convite (13/11/2026; o Empresarial volta quando
+    existir), sem preço escrito; cada um leva direto ao WhatsApp com a mensagem do plano; a condição dos três primeiros
+    meses é apresentada pela equipe."""
     pagina = HTML["emissao-nacional.html"]
     planos = re.search(r'<section id="planos".*?</section>', pagina, re.DOTALL)
     assert planos
-    assert re.findall(r"<h3>([^<]+)</h3>", planos.group()) == ["Inicial", "Empresarial", "Escritório"]
-    for limite in ("1 empresa", "Até 5 notas por mês", "Até 100 notas por mês", "Várias empresas"):
+    assert re.findall(r"<h3>([^<]+)</h3>", planos.group()) == ["Inicial", "Escritório"]
+    for limite in ("1 empresa", "Até 5 notas por mês", "Várias empresas"):
         assert limite in planos.group(), limite
     acoes = re.findall(r'<p class="plano__acao"><a class="link-seta" href="([^"]+)">([^<]+)<span class="tudo-oculto"> \(abre o WhatsApp\)</span></a></p>', planos.group())
-    assert len(acoes) == 3 and all(href.startswith(WHATSAPP + "?text=") and "plano" in href for href, _ in acoes)
+    assert len(acoes) == 2 and all(href.startswith(WHATSAPP + "?text=") and "plano" in href for href, _ in acoes)
     assert "três primeiros meses" in planos.group() and "código de teste" not in planos.group()
     contato = re.search(r'<section id="contato".*?</section>', pagina, re.DOTALL)
     assert contato and "o Emissor ou as DMS" not in contato.group()
@@ -915,4 +916,32 @@ def test_letras_das_maquetes_legiveis_no_celular(endereco: str) -> None:
             assert not pequenas, (nome, pequenas)
             assert pagina.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth") == 0
         nav.close()
+
+
+# ------------------------------------------------------------------ 13/11/2026: o app da abertura por convite
+@pytest.mark.parametrize("nome", PAGINAS)
+def test_so_o_que_o_app_da_abertura_tem(nome: str) -> None:
+    """O plano de abertura do emissor (aprovado pelo dono em 13/11/2026): uma conta por escritório, do responsável, e dois
+    planos. O acesso por pessoa da equipe só pode aparecer como algo que ainda vem; o Empresarial sai até existir."""
+    texto = _texto(HTML[nome])
+    for frase in ("empresarial", "cada pessoa da equipe tem o", "cada pessoa da equipe com o seu", "cada pessoa entra com o próprio",
+                  "o acesso de cada pessoa da equipe:"):
+        assert frase not in texto, (nome, frase)
+
+
+def test_onde_os_dados_ficam_e_como_se_entra() -> None:
+    """A política diz onde os dados ficam (Estados Unidos, sem a região: decisão de 12/11/2026) e que os e-mails saem pela
+    Amazon SES; a página do Emissor diz que o cadastro é por convite e como recuperar a senha e o celular."""
+    politica = HTML["privacidade.html"]
+    assert politica.count("Estados Unidos") >= 2 and "Amazon SES" in politica and "convite" in politica
+    emissor = HTML["emissao-nacional.html"]
+    def resposta(i: str) -> str:
+        corpo = re.search(rf'<div class="pergunta__corpo" id="{i}">.*?</div></div>', emissor, re.DOTALL)
+        assert corpo, i
+        return corpo.group()
+    assert all(p in resposta("p7") for p in ("código de convite", "7 dias", "e-mail"))
+    assert ">E se eu perder a senha ou o celular?<" in emissor
+    assert all(p in resposta("p10") for p in ("Esqueci a senha", "código de recuperação", "senha-mestra"))
+    assert "Estados Unidos" in resposta("p6")
+    assert "convite" in HTML["termos-de-uso.html"]
 

@@ -82,17 +82,18 @@ reescreva. Nos textos legais, linguagem de escritório, direta, sem juridiquês 
 
 ## As decisões do dono que valem no site inteiro
 
-Sem preço escrito (o preço é combinado com a equipe; a condição especial dos três primeiros meses dos planos
-Empresarial e Escritório é apresentada no WhatsApp), três planos no Emissor (Inicial: 1 empresa e até 5 notas por
-mês; Empresarial: 1 empresa e até 100 notas por mês; Escritório: várias empresas), sem o nome da verificação do portal (o
+Sem preço escrito (o preço é combinado com a equipe; a condição especial dos três primeiros meses do plano
+Escritório é apresentada no WhatsApp), dois planos no Emissor na abertura por convite (Inicial: 1
+empresa e até 5 notas por mês; Escritório: várias empresas; o Empresarial volta quando o app o tiver), uma conta por
+escritório, do responsável (o acesso por pessoa só como algo que ainda vem), sem o nome da verificação do portal (o
 download diz "o portal pede uma verificação"), sem prova social (depoimento, número
-de clientes, logos de clientes), sem modo escuro, WhatsApp como único contato, o O² como marca principal, "servidor da
-Amazon" sem dizer onde, cookies sem banner (uma linha no rodapé: o site não usa nenhum), e a faixa de prévia até zerar
+de clientes, logos de clientes), sem modo escuro, WhatsApp como único contato, o O² como marca principal, os dados nos
+Estados Unidos, sem dizer a região (13/11/2026), cookies sem banner (uma linha no rodapé: o site não usa nenhum), e a faixa de prévia até zerar
 a lista abaixo.
 
 ## O que não dizer sem o dono decidir
 
-Preço, cidade ou quantidade de empresas do Oxygênio DMS, onde o servidor fica (só "servidor da Amazon"),
+Preço, cidade ou quantidade de empresas do Oxygênio DMS, a região do servidor (só "nos Estados Unidos"),
 o nome da verificação do portal, e-mail, endereço, razão social por extenso nos textos legais (até ele confirmar), prazos de guarda de dados.
 
 ## O que falta decidir (a lista que segura a prévia)
@@ -104,13 +105,14 @@ Cada item está marcado na página com `class="a-confirmar"` e repetido em `A_CO
   só "Cianorte, Paraná", sem rua nem CEP, no rodapé e nas páginas legais.
 - `emissao-nacional.html` e `build.html`: nada pendente desde 12/11/2026 (planos, tempos, lista do DMS e prefeituras
   decididos).
-- As páginas legais (versão 0.4, 12/11/2026, corrigidas pela rodada de 11/11 com o que os apps fazem: o servidor não
-  guarda o XML nem o PDF, as senhas se abrem dentro do servidor, a cópia diária vai cifrada ao Backblaze B2): razão
+- As páginas legais (versão 0.5, 13/11/2026: a 0.4 corrigiu com o que os apps fazem; a 0.5 alinhou ao app da
+  abertura por convite, com uma conta por escritório, dois planos, o convite, a recuperação e os dados nos Estados
+  Unidos; o emissor copia termos e privacidade para o app e pede novo aceite): razão
   social e CNPJ (já conferidos no cartão, o dono confirma o uso), o encarregado, o apagamento quando a conta termina (o
   emissor ainda não tem o procedimento), os prazos propostos (6 meses dos registros de acesso, 30 dias de aviso, 15 dias
   de resposta),
-  o limite de responsabilidade (o que foi pago em 12 meses), o foro (Comarca de Cianorte), o local do servidor (para
-  a transferência internacional), os papéis de controlador e operador, e a revisão de um advogado.
+  o limite de responsabilidade (o que foi pago em 12 meses), o foro (Comarca de Cianorte), a base legal da
+  transferência para os Estados Unidos (com o advogado), os papéis de controlador e operador, e a revisão de um advogado.
 
 ## Para publicar de verdade (depois de zerar a lista)
 

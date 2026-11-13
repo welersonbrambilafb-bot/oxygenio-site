@@ -62,7 +62,7 @@
   <h2 id="quais-dados">3. Que dados tratamos</h2>
   <h3>Do escritório (quem usa a conta)</h3>
   <ul>
-    <li>Nome, e-mail e telefone de contato, CNPJ do escritório, e o acesso de cada pessoa da equipe: login, senha (guardada de forma que não pode ser lida de volta) e o segundo fator de acesso.</li>
+    <li>Nome, e-mail e telefone de contato, CNPJ do escritório, login e senha da conta (a senha guardada de forma que não pode ser lida de volta) e o segundo fator de acesso.</li>
   </ul>
   <h3>Dos prestadores (clientes do escritório)</h3>
   <ul>
@@ -108,13 +108,14 @@
   <h2 id="compartilhamento">6. Com quem compartilhamos</h2>
   <ul>
     <li><strong>Portal Nacional da NFS-e:</strong> os dados da nota e o login do prestador vão ao portal para a emissão, por comando do escritório. É o destino necessário do serviço; o portal tem as próprias regras.</li>
-    <li><strong>Hospedagem:</strong> o emissor roda em servidor da Amazon (AWS), que guarda os dados por conta da Oxygênio, como operadora, com acesso por HTTPS.</li>
-    <li><strong>Cópia de segurança:</strong> uma cópia por dia, cifrada antes de sair do servidor, vai ao Backblaze B2, fora da Amazon, que guarda o arquivo por 90 dias sem conseguir lê-lo.</li>
+    <li><strong>Hospedagem:</strong> o emissor roda em servidor da Amazon (AWS), nos Estados Unidos, que guarda os dados por conta da Oxygênio, como operadora, com acesso por HTTPS.</li>
+    <li><strong>Cópia de segurança:</strong> uma cópia por dia, cifrada antes de sair do servidor, vai ao Backblaze B2, também nos Estados Unidos, fora da Amazon, que guarda o arquivo por 90 dias sem conseguir lê-lo.</li>
+    <li><strong>E-mail:</strong> os códigos e avisos do emissor (convite, confirmação do cadastro, recuperação de senha) saem pela Amazon SES, o serviço de e-mail da Amazon, com o endereço de quem os recebe.</li>
     <li><strong>WhatsApp:</strong> quando você escolhe chamar a equipe por ele, a conversa segue as regras do próprio WhatsApp.</li>
     <li><strong>Autoridades:</strong> quando a lei ou uma ordem fundamentada exigir.</li>
   </ul>
   <h3>Transferência internacional</h3>
-  <p>O servidor da Amazon que hospeda o emissor e a cópia de segurança no Backblaze B2 podem ficar fora do Brasil <span class="a-confirmar">local do servidor a confirmar</span>. Nesse caso, a transferência segue o artigo 33 da LGPD: os dois fornecedores se obrigam, por contrato, a proteger os dados no padrão exigido pela lei brasileira. As senhas dos portais e a cópia de segurança vão cifradas; os demais dados ficam no servidor, com acesso restrito à Oxygênio e conexão por HTTPS.</p>
+  <p>O servidor da Amazon que hospeda o emissor, o envio de e-mail pela Amazon SES e a cópia de segurança no Backblaze B2 ficam nos Estados Unidos. A transferência para fora do Brasil segue o artigo 33 da LGPD <span class="a-confirmar">base da transferência a confirmar</span>: os dois fornecedores se obrigam, por contrato, a proteger os dados no padrão exigido pela lei brasileira. As senhas dos portais e a cópia de segurança vão cifradas; os demais dados ficam no servidor, com acesso restrito à Oxygênio e conexão por HTTPS.</p>
 
   <h2 id="cookies">7. Cookies</h2>
   <p>Este site não usa cookie nenhum. O emissor usa só os cookies necessários ao funcionamento: o que mantém você conectado durante o uso e o que leva um aviso de uma tela para a seguinte. Eles não servem para rastrear nem para publicidade.</p>
@@ -132,8 +133,9 @@
   <ul>
     <li>Conexão por HTTPS entre o seu navegador e o emissor.</li>
     <li>Senhas dos portais cifradas no servidor e nas cópias de segurança. Elas só se abrem dentro do servidor, depois que o escritório digita a senha-mestra, para falar com o portal em nome do cliente. A Oxygênio não guarda a senha-mestra e não consegue recuperá-la.</li>
-    <li>Senha de cada acesso guardada de forma irreversível; entrada com verificação em duas etapas, e freio da entrada depois de muitas tentativas erradas.</li>
+    <li>Senha da conta guardada de forma irreversível; entrada com verificação em duas etapas, e freio da entrada depois de muitas tentativas erradas.</li>
     <li>Uma cópia de segurança por dia, cifrada, guardada fora da Amazon.</li>
+    <li>Conta criada só por convite da equipe, com a confirmação de um código enviado ao e-mail do cadastro.</li>
     <li>Registros do sistema sem senha e sem dado além do necessário. Acesso ao servidor restrito à Oxygênio.</li>
     <li>Emissão em produção com uma confirmação a mais e a faixa do ambiente sempre à vista.</li>
   </ul>
@@ -165,7 +167,7 @@
   <h2 id="alteracoes">13. Alterações desta política</h2>
   <p>Quando esta política mudar, a nova versão é publicada nesta página, com data e número de versão, e avisada no emissor. A versão anterior fica disponível a quem pedir. Ela é revisada pelo menos uma vez por ano e sempre que o serviço ou a lei mudar.</p>
 
-  <p class="versao">Versão 0.4, rascunho de 12 de novembro de 2026.</p>
+  <p class="versao">Versão 0.5, rascunho de 13 de novembro de 2026.</p>
 </article>
 </main>
 

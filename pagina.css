@@ -437,7 +437,7 @@ html.js .pergunta.aberta .pergunta__texto { visibility: visible; transition-dela
   .recursos { grid-template-columns: repeat(2, 1fr); }
   .produto { grid-template-columns: auto 1fr; align-items: start; }
   .seguranca { grid-template-columns: auto 1fr; gap: 3rem; align-items: start; }
-  .planos { grid-template-columns: repeat(3, 1fr); }
+  .planos { grid-template-columns: repeat(2, 1fr); max-width: 52rem; }
   .fatos { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2.5rem; }
   .rodape__grade { grid-template-columns: 1fr 1fr; }
 }
