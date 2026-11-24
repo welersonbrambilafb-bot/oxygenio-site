@@ -113,6 +113,19 @@ Cada item está marcado na página com `class="a-confirmar"` e repetido em `A_CO
   de resposta),
   o limite de responsabilidade (o que foi pago em 12 meses), o foro (Comarca de Cianorte), a base legal da
   transferência para os Estados Unidos (com o advogado), os papéis de controlador e operador, e a revisão de um advogado.
+- **Versão 0.6 dos textos legais (24/11/2026)**, a partir da base jurídica de 22/11/2026 (no repositório do emissor,
+  `docs/base-juridica-2026-11-22.md`, com a lei, as fontes e as perguntas ao advogado): a ANPD virou Agência (Lei
+  15.352/2026); "Em 1 minuto" no alto dos Termos e da Política; a base legal dos tomadores corrigida (a do prestador,
+  não o contrato com o escritório); o dado sensível que a descrição livre da nota pode revelar; a seção dos dados
+  tratados por conta do escritório (LGPD, art. 39); a transferência para os Estados Unidos com os itens da Res. CD/ANPD
+  19/2024; o cookie do aparelho autorizado, os dados do cadastro do escritório e o registro do encerramento; o aceite
+  expresso da versão nova, como o app faz; as partes do cliente do escritório e de quem usa os aplicativos. **Novos
+  itens a decidir:** o endereço completo nos Termos (hoje só a cidade, decisão de 08/11), o uso da conta pela equipe
+  enquanto não há acesso por pessoa, as condições de pagamento (reajuste e atraso), o prazo de guarda do registro do
+  encerramento (5 anos proposto), o prazo para avisar o escritório de incidente (48 horas proposto), os papéis também
+  nos Termos, e como funciona a licença do Oxygênio DMS (se consulta servidor da Oxygênio, a frase de que a Oxygênio não
+  recebe dado do DMS muda). Não decidido na 0.6, e fora dos textos por enquanto: senha do cliente ou procuração
+  eletrônica da NFS-e, os termos de licença do DMS.
 
 ## Para publicar de verdade (depois de zerar a lista)
 

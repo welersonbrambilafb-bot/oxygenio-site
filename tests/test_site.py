@@ -32,6 +32,8 @@ INDEPENDENCIA = "sem vínculo com a Receita Federal, com prefeituras nem com o P
 # do encarregado fica num endereço do domínio da empresa, ainda a criar (decisão do dono, 12/11/2026): marcado até existir.
 RODAPE_A_CONFIRMAR = {"a confirmar", "e-mail a confirmar"}
 LEGAL_A_CONFIRMAR = {"revisão de advogado a confirmar", "razão social a confirmar"}
+# Versão 0.6 (24/11/2026, a base jurídica de 22/11): as decisões que a base abriu para o dono, marcadas até ele decidir
+AVISO_AO_ESCRITORIO = "prazo de aviso ao escritório a confirmar"
 A_CONFIRMAR: dict[str, set[str]] = {
     "index.html": RODAPE_A_CONFIRMAR,
     # decididos em 12/11/2026: os três planos, a condição dos três primeiros meses, sem promessa de tempo, a lista do
@@ -40,12 +42,16 @@ A_CONFIRMAR: dict[str, set[str]] = {
     "build.html": RODAPE_A_CONFIRMAR,
     "termos-de-uso.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
         "CNPJ a confirmar", "limite de responsabilidade a confirmar", "apagamento a confirmar",
-        "prazo de aviso a confirmar", "foro a confirmar"},
+        "prazo de aviso a confirmar", "foro a confirmar", "endereço completo a confirmar", "acesso da equipe a confirmar",
+        "condições de pagamento a confirmar", "papéis a confirmar com advogado", "guarda do aceite a confirmar",
+        AVISO_AO_ESCRITORIO},
     "privacidade.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {
         "CNPJ a confirmar", "papéis a confirmar com advogado", "base da transferência a confirmar", "apagamento a confirmar",
-        "prazo de guarda a confirmar", "prazo de resposta a confirmar", "encarregado a confirmar"},
+        "prazo de guarda a confirmar", "prazo de resposta a confirmar", "encarregado a confirmar",
+        "guarda do aceite a confirmar", AVISO_AO_ESCRITORIO},
     "lgpd.html": RODAPE_A_CONFIRMAR | LEGAL_A_CONFIRMAR | {"papéis a confirmar com advogado", "apagamento a confirmar",
-                                                          "prazo de resposta a confirmar", "encarregado a confirmar"},
+                                                          "prazo de resposta a confirmar", "encarregado a confirmar",
+                                                          "licença do DMS a confirmar", AVISO_AO_ESCRITORIO},
 }
 BLOCO_ROOT = re.compile(r"^:root \{.*?^\}\n", re.DOTALL | re.MULTILINE)
 
@@ -927,6 +933,45 @@ def test_so_o_que_o_app_da_abertura_tem(nome: str) -> None:
     for frase in ("empresarial", "cada pessoa da equipe tem o", "cada pessoa da equipe com o seu", "cada pessoa entra com o próprio",
                   "o acesso de cada pessoa da equipe:"):
         assert frase not in texto, (nome, frase)
+
+
+@pytest.mark.parametrize("nome", LEGAIS)
+def test_legais_na_versao_da_base_juridica(nome: str) -> None:
+    """Versão 0.6 (24/11/2026): a ANPD virou agência (Lei 15.352/2026); a descrição livre da nota pode revelar dado
+    sensível, então nenhuma página diz que não há; o resumo de um minuto abre os textos longos."""
+    pagina, texto = HTML[nome], _texto(HTML[nome])
+    assert "autoridade nacional de proteção de dados" not in texto
+    assert "não tratamos dados sensíveis" not in texto and "não tratamos dados de crianças" not in texto
+    assert "este site não coleta dado nenhum" not in texto  # o provedor do site registra o IP de quem visita
+    if nome != "lgpd.html":
+        assert '<h2 id="resumo">Em 1 minuto</h2>' in pagina
+    if nome != "termos-de-uso.html":
+        assert "Agência Nacional de Proteção de Dados" in pagina
+
+
+def test_politica_0_6_transferencia_cliente_e_oposicao() -> None:
+    """A transferência para fora do Brasil com os itens que a Res. CD/ANPD 19/2024 pede no site, a parte do cliente do
+    escritório, a oposição (art. 18, § 2º), o cookie do aparelho e os dados do cadastro do escritório."""
+    pagina = HTML["privacidade.html"]
+    transferencia = re.search(r'<h3 id="transferencia">.*?</ul>', pagina, re.DOTALL)
+    assert transferencia
+    for item in ("Para onde:", "Para quê:", "Como e por quanto tempo:", "Quem responde:", "Com que garantia:",
+                 "Seus direitos:"):
+        assert item in transferencia.group(), item
+    assert '<h2 id="cliente-do-escritorio">' in pagina and "art. 18, § 2º" in pagina
+    assert "Confiar neste aparelho por 60 dias" in pagina and "nota fiscal da mensalidade" in pagina
+
+
+def test_termos_0_6_aceite_expresso_e_dados_por_conta_do_escritorio() -> None:
+    """A mudança dos termos pede aceite na entrada seguinte, como o app faz (o 'continuar usando' saiu); os dados
+    tratados por conta do escritório têm a seção própria (LGPD, art. 39)."""
+    pagina = HTML["termos-de-uso.html"]
+    assert "continuar usando o serviço depois do prazo" not in _texto(pagina)
+    alteracoes = re.search(r'<h2 id="alteracoes">.*?</p>', pagina, re.DOTALL)
+    assert alteracoes and "aceitar" in alteracoes.group()
+    tratamento = re.search(r'<h2 id="tratamento">.*?</ul>', pagina, re.DOTALL)
+    assert tratamento and all(p in tratamento.group() for p in ("Instruções:", "Incidente:", "Fim do contrato:"))
+    assert "autorização por escrito" in pagina
 
 
 def test_onde_os_dados_ficam_e_como_se_entra() -> None:
